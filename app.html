@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jitter Editor</title>
+  <!-- CodeMirror Syntax Highlighting -->
+  <link rel="stylesheet" href="https://cloudflare.com">
+  <link rel="stylesheet" href="https://cloudflare.com">
+  <script src="https://cloudflare.com"></script>
+  <script src="https://cloudflare.com"></script>
+  <script src="https://cloudflare.com"></script>
+  <script src="https://cloudflare.com"></script>
+  <script src="https://cloudflare.com"></script>
+  <script src="https://cloudflare.com"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
+    body { background: #1e1f29; color: #f8f8f2; height: 100vh; display: flex; flex-direction: column; }
+    header { background: #282a36; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #44475a; }
+    .brand { font-weight: 800; font-size: 1.2rem; color: #50fa7b; letter-spacing: 0.5px; }
+    .controls button { background: #44475a; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; margin-left: 8px; font-weight: 600; }
+    .controls button:hover { background: #6272a4; }
+    .controls button.primary { background: #50fa7b; color: #1e1f29; }
+    .status { font-size: 0.85rem; color: #bd93f9; margin-left: 15px; }
+    #editor-container { flex: 1; overflow: hidden; }
+    .CodeMirror { height: 100%; font-size: 15px; }
+    /* Language Modal */
+    #lang-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; z-index: 999; }
+    .modal-box { background: #282a36; padding: 28px; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; border: 1px solid #6272a4; }
+    .modal-box h2 { margin-bottom: 8px; color: #f8f8f2; }
+    .modal-box p { margin-bottom: 18px; color: #bfc7d5; font-size: 0.9rem; }
+    .lang-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .lang-btn { background: #44475a; color: #fff; border: none; padding: 12px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; }
+    .lang-btn:hover { background: #bd93f9; color: #1e1f29; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>
+      <span class="brand">⚡ Jitter</span>
+      <span class="status" id="file-info">Untitled • No Language Selected</span>
+    </div>
+    <div class="controls">
+      <button onclick="openFile()">Open File</button>
+      <button onclick="saveFile()" class="primary">Save File</button>
+      <button onclick="showModal()">Change Language</button>
+    </div>
+  </header>
+
+  <div id="editor-container">
+    <textarea id="code"></textarea>
+  </div>
+
+  <!-- Language Selection Popup -->
+  <div id="lang-modal">
+    <div class="modal-box">
+      <h2>Which coding language?</h2>
+      <p>Choose the language for this file to enable syntax highlighting.</p>
+      <div class="lang-grid">
+        <button class="lang-btn" onclick="setLanguage('HTML', 'htmlmixed')">HTML</button>
+        <button class="lang-btn" onclick="setLanguage('CSS', 'css')">CSS</button>
+        <button class="lang-btn" onclick="setLanguage('JavaScript', 'javascript')">JavaScript</button>
+        <button class="lang-btn" onclick="setLanguage('C#', 'text/x-csharp')">C#</button>
+        <button class="lang-btn" onclick="setLanguage('C++', 'text/x-c++src')">C++</button>
+        <button class="lang-btn" onclick="setLanguage('C', 'text/x-csrc')">C</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let fileHandle = null;
+    let currentFileName = "Untitled";
+    let currentLang = "Plain Text";
+
+    const editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+      lineNumbers: true,
+      theme: "dracula",
+      tabSize: 2
+    });
+
+    function showModal() {
+      document.getElementById("lang-modal").style.display = "flex";
+    }
+
+    function setLanguage(label, mode) {
+      currentLang = label;
+      editor.setOption("mode", mode);
+      document.getElementById("lang-modal").style.display = "none";
+      updateStatus();
+    }
+
+    function updateStatus() {
+      document.getElementById("file-info").textContent = `${currentFileName} • ${currentLang}`;
+    }
+
+    async function openFile() {
+      try {
+        [fileHandle] = await window.showOpenFilePicker();
+        const file = await fileHandle.getFile();
+        const contents = await file.text();
+        currentFileName = file.name;
+        editor.setValue(contents);
+        showModal(); // Prompts user for coding language right after opening
+      } catch (err) {
+        console.log("File open cancelled or unsupported browser.");
+      }
+    }
+
+    async function saveFile() {
+      try {
+        if (!fileHandle) {
+          fileHandle = await window.showSaveFilePicker();
+          currentFileName = fileHandle.name;
+        }
+        const writable = await fileHandle.createWritable();
+        await writable.write(editor.getValue());
+        await writable.close();
+        updateStatus();
+        alert("Saved!");
+      } catch (err) {
+        console.log("Save cancelled.");
+      }
+    }
+  </script>
+</body>
+</html>

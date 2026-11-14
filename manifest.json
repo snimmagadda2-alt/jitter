@@ -1,0 +1,15 @@
+{
+  "name": "Jitter Code Editor",
+  "short_name": "Jitter",
+  "start_url": "/app.html",
+  "display": "standalone",
+  "background_color": "#1e1f29",
+  "theme_color": "#50fa7b",
+  "icons": [
+    {
+      "src": "https://flaticon.com",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

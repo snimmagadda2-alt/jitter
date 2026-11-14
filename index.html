@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jitter — Lightweight Code Editor</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body { margin: 0; font-family: system-ui, sans-serif; background: #13141c; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; padding: 20px; }
+    h1 { font-size: 3rem; margin-bottom: 10px; color: #50fa7b; }
+    p { max-width: 540px; color: #bfc7d5; font-size: 1.15rem; line-height: 1.6; margin-bottom: 30px; }
+    .btn-group { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+    .btn { padding: 14px 28px; border-radius: 8px; font-size: 1rem; font-weight: bold; text-decoration: none; cursor: pointer; border: none; }
+    .btn-launch { background: #50fa7b; color: #13141c; }
+    .btn-install { background: #bd93f9; color: #13141c; display: none; }
+    .badges { margin-top: 40px; color: #6272a4; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+
+  <h1>⚡ Jitter</h1>
+  <p>A fast, distraction-free code editor for Windows PC, Mac, and Chromebook. Open local files and write HTML, CSS, JavaScript, C#, C++, and C.</p>
+
+  <div class="btn-group">
+    <a href="app.html" class="btn btn-launch">Launch Web Editor</a>
+    <button id="install-btn" class="btn btn-install">Install Jitter App</button>
+  </div>
+
+  <div class="badges">Works on Windows • macOS • ChromeOS</div>
+
+  <script>
+    let deferredPrompt;
+    const installBtn = document.getElementById('install-btn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = 'inline-block';
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        installBtn.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
