@@ -3,49 +3,177 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jitter — Lightweight Code Editor</title>
-  <link rel="manifest" href="manifest.json">
+  <title>JitterDev — Lightweight Code Editor</title>
+  <link rel="icon" type="image/png" href="icon.png">
   <style>
-    body { margin: 0; font-family: system-ui, sans-serif; background: #13141c; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; padding: 20px; }
-    h1 { font-size: 3rem; margin-bottom: 10px; color: #50fa7b; }
-    p { max-width: 540px; color: #bfc7d5; font-size: 1.15rem; line-height: 1.6; margin-bottom: 30px; }
-    .btn-group { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
-    .btn { padding: 14px 28px; border-radius: 8px; font-size: 1rem; font-weight: bold; text-decoration: none; cursor: pointer; border: none; }
-    .btn-launch { background: #50fa7b; color: #13141c; }
-    .btn-install { background: #bd93f9; color: #13141c; display: none; }
-    .badges { margin-top: 40px; color: #6272a4; font-size: 0.9rem; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(circle at top, #1b1138 0%, #090712 65%);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .app-logo {
+      width: 124px;
+      height: 124px;
+      border-radius: 28px;
+      margin-bottom: 20px;
+      box-shadow: 0 12px 40px rgba(139, 92, 246, 0.5);
+      border: 1px solid rgba(167, 139, 250, 0.3);
+    }
+
+    h1 {
+      font-size: 3.4rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      letter-spacing: -1px;
+      color: #ffffff;
+    }
+
+    h1 span {
+      color: #8b5cf6;
+    }
+
+    p {
+      max-width: 560px;
+      color: #c4b5fd;
+      font-size: 1.15rem;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .lang-pills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+
+    .pill {
+      background: rgba(139, 92, 246, 0.15);
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      color: #ddd6fe;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .btn-install {
+      background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+      color: #ffffff;
+      padding: 18px 36px;
+      border-radius: 14px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid rgba(196, 181, 253, 0.35);
+      box-shadow: 0 8px 30px rgba(124, 58, 237, 0.5);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      display: inline-block;
+    }
+
+    .btn-install:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(139, 92, 246, 0.7);
+    }
+
+    .os-detected {
+      margin-top: 14px;
+      font-size: 0.9rem;
+      color: #a78bfa;
+    }
+
+    .all-downloads {
+      margin-top: 48px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(139, 92, 246, 0.2);
+      font-size: 0.9rem;
+      color: #7c3aed;
+    }
+
+    .all-downloads span {
+      display: block;
+      margin-bottom: 8px;
+      color: #8b5cf6;
+      font-weight: 600;
+    }
+
+    .all-downloads a {
+      color: #c4b5fd;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: 500;
+    }
+
+    .all-downloads a:hover {
+      text-decoration: underline;
+      color: #ffffff;
+    }
   </style>
 </head>
 <body>
 
-  <h1>⚡ Jitter</h1>
-  <p>A fast, distraction-free code editor for Windows PC, Mac, and Chromebook. Open local files and write HTML, CSS, JavaScript, C#, C++, and C.</p>
+  <img src="icon.png" alt="JitterDev App Icon" class="app-logo">
+  <h1>Jitter<span>Dev</span></h1>
+  <p>A fast, distraction-free desktop code editor for Windows PC, Mac, and Chromebook. Open local files and write code with instant language selection.</p>
 
-  <div class="btn-group">
-    <a href="app.html" class="btn btn-launch">Launch Web Editor</a>
-    <button id="install-btn" class="btn btn-install">Install Jitter App</button>
+  <div class="lang-pills">
+    <span class="pill">HTML</span>
+    <span class="pill">CSS</span>
+    <span class="pill">JavaScript</span>
+    <span class="pill">C#</span>
+    <span class="pill">C++</span>
+    <span class="pill">C</span>
   </div>
 
-  <div class="badges">Works on Windows • macOS • ChromeOS</div>
+  <a id="main-download-btn" href="https://github.com" class="btn-install">
+    Install JitterDev
+  </a>
+  <div id="os-label" class="os-detected">Detecting your operating system...</div>
+
+  <div class="all-downloads">
+    <span>Other Platforms</span>
+    <a href="https://github.com">Windows (.exe)</a> •
+    <a href="https://github.com">macOS (.dmg)</a> •
+    <a href="https://github.com">Chromebook / Linux (.deb)</a>
+  </div>
 
   <script>
-    let deferredPrompt;
-    const installBtn = document.getElementById('install-btn');
+    const btn = document.getElementById("main-download-btn");
+    const label = document.getElementById("os-label");
+    const userAgent = navigator.userAgent.toLowerCase();
 
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      installBtn.style.display = 'inline-block';
-    });
+    const releaseBase = "https://github.com";
 
-    installBtn.addEventListener('click', async () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        await deferredPrompt.userChoice;
-        deferredPrompt = null;
-        installBtn.style.display = 'none';
-      }
-    });
+    if (userAgent.includes("mac")) {
+      btn.href = releaseBase + "Jitter-Mac.dmg";
+      btn.textContent = "Install JitterDev for Mac (.dmg)";
+      label.textContent = "Detected macOS • Ready to download Jitter-Mac.dmg";
+    } else if (userAgent.includes("cros") || userAgent.includes("linux")) {
+      btn.href = releaseBase + "Jitter-Chromebook.deb";
+      btn.textContent = "Install JitterDev for Chromebook / Linux (.deb)";
+      label.textContent = "Detected ChromeOS / Linux • Ready to download Jitter-Chromebook.deb";
+    } else {
+      btn.href = releaseBase + "Jitter-Setup.exe";
+      btn.textContent = "Install JitterDev for Windows (.exe)";
+      label.textContent = "Detected Windows PC • Ready to download Jitter-Setup.exe";
+    }
   </script>
+
 </body>
 </html>
