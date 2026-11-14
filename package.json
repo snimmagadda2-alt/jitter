@@ -2,6 +2,8 @@
   "name": "jitter-editor",
   "version": "1.0.0",
   "description": "Fast, distraction-free code editor for PC, Mac, and Chromebook",
+  "author": "snimmagadda2-alt <snimmagadda2-alt@://github.com>",
+  "license": "MIT",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
@@ -13,7 +15,6 @@
   "build": {
     "appId": "com.jitter.editor",
     "productName": "JitterDev",
-    "icon": "icon.png",
     "files": [
       "main.js",
       "app.html",
@@ -21,17 +22,14 @@
     ],
     "win": {
       "target": "nsis",
-      "icon": "icon.png",
       "artifactName": "Jitter-Setup.${ext}"
     },
     "mac": {
       "target": "dmg",
-      "icon": "icon.png",
       "artifactName": "Jitter-Mac.${ext}"
     },
     "linux": {
       "target": "deb",
-      "icon": "icon.png",
       "category": "Development",
       "artifactName": "Jitter-Chromebook.${ext}"
     }
