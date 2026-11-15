@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>JitterDev — Lightweight Code Editor</title>
-  <link rel="manifest" href="manifest.json" />
   <link rel="icon" type="image/png" sizes="32x32" href="icon.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon.png" />
   <link rel="apple-touch-icon" href="icon.png" />
@@ -85,64 +84,54 @@
 
     <div class="btn-group">
       <a id="main-download-btn" href="https://github.com" class="btn-install">
-        Install JitterDev App
+        Download Installer
       </a>
       <a href="app.html" class="btn-secondary">Open Editor Now</a>
     </div>
 
-    <div id="os-label" class="os-detected">Detecting your device...</div>
+    <div id="os-label" class="os-detected">Detecting your operating system...</div>
 
     <div class="all-downloads">
-      <span>Desktop Installers:</span>
-      <a href="https://github.com/latest/download/Jitter-Setup.exe">Windows (.exe)</a>
+      <span>All Downloads (v1.0.1):</span>
+      <a id="dl-win" href="https://github.com">Windows (.exe)</a>
       <span>•</span>
-      <a href="https://github.com/latest/download/Jitter-Mac.dmg">macOS (.dmg)</a>
+      <a id="dl-mac" href="https://github.com">macOS (.dmg)</a>
       <span>•</span>
-      <a href="https://github.com/latest/download/Jitter-Chromebook.deb">Chromebook / Linux (.deb)</a>
+      <a id="dl-deb" href="https://github.com">Chromebook / Linux (.deb)</a>
     </div>
   </div>
 
   <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js");
-    }
+    const user = "snimmagadda2-alt";
+    const repo = "jitter";
+    const tag = "v1.0.1";
+    const base = "https://github.com" + user + "/" + repo + "/releases/download/" + tag;
+
+    const winUrl = base + "/Jitter-Setup.exe";
+    const macUrl = base + "/Jitter-Mac.dmg";
+    const debUrl = base + "/Jitter-Chromebook.deb";
+
+    document.getElementById("dl-win").href = winUrl;
+    document.getElementById("dl-mac").href = macUrl;
+    document.getElementById("dl-deb").href = debUrl;
 
     const btn = document.getElementById("main-download-btn");
     const label = document.getElementById("os-label");
-    const userAgent = navigator.userAgent.toLowerCase();
-    const releaseBase = "https://github.com/latest/download";
-    let deferredPrompt = null;
+    const ua = navigator.userAgent.toLowerCase();
 
-    if (userAgent.includes("mac")) {
-      btn.href = `${releaseBase}/Jitter-Mac.dmg`;
-      btn.textContent = "Install JitterDev for Mac (.dmg)";
-      label.textContent = "Detected macOS • Click to download Jitter-Mac.dmg";
-    } else if (userAgent.includes("cros") || userAgent.includes("linux")) {
-      btn.href = `${releaseBase}/Jitter-Chromebook.deb`;
-      btn.textContent = "Install JitterDev for Chromebook";
-      label.textContent = "Detected Chromebook / Linux • Ready to install";
+    if (ua.includes("mac")) {
+      btn.href = macUrl;
+      btn.textContent = "Download JitterDev for Mac (.dmg)";
+      label.textContent = "Detected macOS • Downloads Jitter-Mac.dmg";
+    } else if (ua.includes("cros") || ua.includes("linux")) {
+      btn.href = debUrl;
+      btn.textContent = "Download JitterDev for Chromebook (.deb)";
+      label.textContent = "Detected Chromebook / Linux • Downloads Jitter-Chromebook.deb";
     } else {
-      btn.href = `${releaseBase}/Jitter-Setup.exe`;
-      btn.textContent = "Install JitterDev for Windows (.exe)";
-      label.textContent = "Detected Windows PC • Click to download Jitter-Setup.exe";
+      btn.href = winUrl;
+      btn.textContent = "Download JitterDev for Windows (.exe)";
+      label.textContent = "Detected Windows PC • Downloads Jitter-Setup.exe";
     }
-
-    window.addEventListener("beforeinstallprompt", (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      btn.href = "#";
-      btn.textContent = "Install JitterDev App";
-      label.textContent = "Click above to install JitterDev directly to your device";
-    });
-
-    btn.addEventListener("click", async (e) => {
-      if (deferredPrompt) {
-        e.preventDefault();
-        deferredPrompt.prompt();
-        await deferredPrompt.userChoice;
-        deferredPrompt = null;
-      }
-    });
   </script>
 </body>
 </html>
