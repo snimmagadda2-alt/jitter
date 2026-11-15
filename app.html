@@ -1,51 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>JitterDev Editor</title>
-  <link rel="icon" type="image/png" href="icon.png">
-  <link rel="stylesheet" href="https://cloudflare.com">
-  <link rel="stylesheet" href="https://cloudflare.com">
+  <link rel="icon" type="image/png" href="icon.png" />
+
+  <!-- CodeMirror Core & Dracula Theme -->
+  <link rel="stylesheet" href="https://cloudflare.com" />
+  <link rel="stylesheet" href="https://cloudflare.com" />
+  <link rel="stylesheet" href="https://cloudflare.com" />
+
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-    body { background: #090712; color: #ffffff; height: 100vh; display: flex; flex-direction: column; }
-    header { background: #120e24; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(139, 92, 246, 0.25); }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #090910;
+      color: #ffffff;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    header {
+      background: #12121c;
+      padding: 10px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(139, 92, 246, 0.25);
+    }
     .brand-wrap { display: flex; align-items: center; gap: 10px; }
     .brand-icon { width: 28px; height: 28px; border-radius: 7px; }
-    .brand { font-weight: 800; font-size: 1.2rem; color: #ffffff; letter-spacing: -0.5px; }
-    .brand span { color: #8b5cf6; }
-    .status { font-size: 0.85rem; color: #a78bfa; margin-left: 14px; background: rgba(139, 92, 246, 0.15); padding: 4px 10px; border-radius: 6px; }
-    .controls button { background: #1e183b; color: #ddd6fe; border: 1px solid rgba(139, 92, 246, 0.3); padding: 8px 14px; border-radius: 8px; cursor: pointer; margin-left: 8px; font-weight: 600; transition: background 0.15s; }
-    .controls button:hover { background: #2e2459; color: #fff; }
-    .controls button.primary { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #fff; border: none; }
+    .brand { font-weight: 800; font-size: 1.05rem; letter-spacing: -0.3px; }
+    .status {
+      font-size: 0.82rem;
+      color: #c4b5fd;
+      margin-left: 10px;
+      background: rgba(139, 92, 246, 0.14);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+    .controls { display: flex; gap: 8px; }
+    .controls button {
+      background: rgba(139, 92, 246, 0.16);
+      color: #ffffff;
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      padding: 7px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: background 0.15s ease;
+    }
+    .controls button:hover { background: rgba(139, 92, 246, 0.3); }
+    .controls button.primary {
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      border: none;
+    }
     .controls button.primary:hover { opacity: 0.92; }
+
     #editor-container { flex: 1; position: relative; overflow: hidden; }
-    #code { width: 100%; height: 100%; background: #0d0a1a; color: #f8f8f2; border: none; padding: 18px; font-family: monospace; font-size: 15px; resize: none; outline: none; }
-    .CodeMirror { height: 100%; font-size: 15px; background: #0d0a1a !important; }
-    .CodeMirror-gutters { background: #120e24 !important; border-right: 1px solid rgba(139, 92, 246, 0.15) !important; }
+    .CodeMirror {
+      height: 100% !important;
+      font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+      font-size: 14.5px;
+      line-height: 1.6;
+      background: #0d0d16 !important;
+    }
+    .CodeMirror-gutters {
+      background: #0d0d16 !important;
+      border-right: 1px solid rgba(139, 92, 246, 0.15) !important;
+    }
+
+    /* VS Code-Style Autocomplete Popup */
+    .CodeMirror-hints {
+      background: #181826 !important;
+      border: 1px solid rgba(139, 92, 246, 0.45) !important;
+      border-radius: 8px !important;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6) !important;
+      padding: 4px !important;
+      font-family: "JetBrains Mono", Consolas, monospace !important;
+      font-size: 13px !important;
+      z-index: 9999 !important;
+    }
+    .CodeMirror-hint {
+      color: #e4e4e7 !important;
+      padding: 5px 10px !important;
+      border-radius: 5px !important;
+    }
+    li.CodeMirror-hint-active {
+      background: #6d28d9 !important;
+      color: #ffffff !important;
+    }
+
     /* Language Modal */
-    #lang-modal { position: fixed; inset: 0; background: rgba(5, 4, 12, 0.85); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 9999; }
-    .modal-box { background: #120e24; padding: 30px; border-radius: 16px; width: 90%; max-width: 410px; text-align: center; border: 1px solid rgba(139, 92, 246, 0.4); box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6); }
-    .modal-box h2 { margin-bottom: 8px; color: #ffffff; font-size: 1.4rem; }
-    .modal-box p { margin-bottom: 20px; color: #c4b5fd; font-size: 0.92rem; }
-    .lang-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .lang-btn { background: #1e183b; color: #fff; border: 1px solid rgba(139, 92, 246, 0.3); padding: 13px; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.15s; }
-    .lang-btn:hover { background: #8b5cf6; border-color: #a78bfa; transform: translateY(-1px); }
+    .lang-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(6, 6, 12, 0.84);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9000;
+    }
+    .lang-box {
+      background: #161624;
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      border-radius: 20px;
+      padding: 32px;
+      width: 90%;
+      max-width: 440px;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+    }
+    .lang-box h2 { font-size: 1.5rem; margin-bottom: 8px; }
+    .lang-box p { color: #a1a1aa; font-size: 0.92rem; margin-bottom: 24px; }
+    .lang-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .lang-btn {
+      background: rgba(139, 92, 246, 0.14);
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      color: #ffffff;
+      padding: 13px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .lang-btn:hover {
+      background: #7c3aed;
+      border-color: #a78bfa;
+      transform: translateY(-2px);
+    }
   </style>
 </head>
 <body>
-
   <header>
     <div class="brand-wrap">
-      <img src="icon.png" alt="Logo" class="brand-icon">
-      <span class="brand">Jitter<span>Dev</span></span>
-      <span class="status" id="file-info">Untitled • No Language Selected</span>
+      <img src="icon.png" alt="Logo" class="brand-icon" />
+      <span class="brand">JitterDev</span>
+      <span id="file-info" class="status">untitled • No language selected</span>
     </div>
     <div class="controls">
-      <button type="button" onclick="openFile()">Open File</button>
-      <button type="button" onclick="saveFile()" class="primary">Save File</button>
-      <button type="button" onclick="showModal()">Change Language</button>
+      <button onclick="openFile()">Open File</button>
+      <button class="primary" onclick="saveFile()">Save File</button>
+      <button onclick="showModal()">Change Language</button>
     </div>
   </header>
 
@@ -54,101 +155,101 @@
   </div>
 
   <!-- Language Selection Popup -->
-  <div id="lang-modal">
-    <div class="modal-box">
+  <div id="lang-modal" class="lang-modal">
+    <div class="lang-box">
       <h2>Which coding language?</h2>
-      <p>Choose the language for this file to enable syntax highlighting.</p>
+      <p>Choose a language to enable VS Code tab tricks, Emmet, and autocomplete suggestions.</p>
       <div class="lang-grid">
-        <button type="button" class="lang-btn" data-lang="HTML" data-mode="htmlmixed">HTML</button>
-        <button type="button" class="lang-btn" data-lang="CSS" data-mode="css">CSS</button>
-        <button type="button" class="lang-btn" data-lang="JavaScript" data-mode="javascript">JavaScript</button>
-        <button type="button" class="lang-btn" data-lang="C#" data-mode="text/x-csharp">C#</button>
-        <button type="button" class="lang-btn" data-lang="C++" data-mode="text/x-c++src">C++</button>
-        <button type="button" class="lang-btn" data-lang="C" data-mode="text/x-csrc">C</button>
+        <button class="lang-btn" data-lang="HTML" data-mode="htmlmixed">HTML</button>
+        <button class="lang-btn" data-lang="CSS" data-mode="css">CSS</button>
+        <button class="lang-btn" data-lang="JavaScript" data-mode="javascript">JavaScript</button>
+        <button class="lang-btn" data-lang="C#" data-mode="text/x-csharp">C#</button>
+        <button class="lang-btn" data-lang="C++" data-mode="text/x-c++src">C++</button>
+        <button class="lang-btn" data-lang="C" data-mode="text/x-csrc">C</button>
       </div>
     </div>
   </div>
 
+  <!-- CodeMirror Core & Language Modes -->
   <script src="https://cloudflare.com"></script>
   <script src="https://cloudflare.com"></script>
   <script src="https://cloudflare.com"></script>
   <script src="https://cloudflare.com"></script>
   <script src="https://cloudflare.com"></script>
   <script src="https://cloudflare.com"></script>
+
+  <!-- VS Code Tab Tricks: Autocomplete, Auto-Close Brackets/Tags & Emmet -->
+  <script src="https://cloudflare.com"></script>
+  <script src="https://cloudflare.com"></script>
+  <script src="https://cloudflare.com"></script>
+  <script src="https://cloudflare.com"></script>
+  <script src="https://cloudflare.com"></script>
+  <script src="https://cloudflare.com"></script>
+  <script src="https://cloudflare.com"></script>
+  <script src="https://cloudflare.com"></script>
+  <script src="https://jsdelivr.net"></script>
 
   <script>
     let fileHandle = null;
-    let currentFileName = "Untitled";
+    let currentFileName = "untitled";
     let currentLang = "Plain Text";
-    let editor = null;
+
     const textarea = document.getElementById("code");
     const modal = document.getElementById("lang-modal");
 
-    if (typeof CodeMirror !== "undefined") {
-      editor = CodeMirror.fromTextArea(textarea, {
-        lineNumbers: true,
-        theme: "dracula",
-        tabSize: 2
-      });
-    }
-
-    function showModal() {
-      modal.style.display = "flex";
-    }
-
-    function updateStatus() {
-      document.getElementById("file-info").textContent = `${currentFileName} • ${currentLang}`;
-    }
-
-    document.querySelectorAll(".lang-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        currentLang = btn.getAttribute("data-lang");
-        const mode = btn.getAttribute("data-mode");
-        modal.style.display = "none";
-        updateStatus();
-
-        if (editor) {
-          editor.setOption("mode", mode);
-          editor.focus();
-        } else {
-          textarea.focus();
-        }
-      });
-    });
-
-    async function openFile() {
-      try {
-        [fileHandle] = await window.showOpenFilePicker();
-        const file = await fileHandle.getFile();
-        const contents = await file.text();
-        currentFileName = file.name;
-
-        if (editor) {
-          editor.setValue(contents);
-        } else {
-          textarea.value = contents;
-        }
-        showModal();
-      } catch (err) {
-        console.log("Open cancelled:", err);
+    // Language-specific snippets & keywords for Tab expansion
+    const languageSnippets = {
+      "HTML": {
+        "!": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Document</title>\n</head>\n<body>\n  \n</body>\n</html>"
+      },
+      "JavaScript": {
+        "clg": "console.log();",
+        "fn": "function name(params) {\n  \n}",
+        "afn": "const name = (params) => {\n  \n};",
+        "fori": "for (let i = 0; i < array.length; i++) {\n  \n}"
+      },
+      "C#": {
+        "cw": "Console.WriteLine();",
+        "main": "using System;\n\nclass Program {\n  static void Main() {\n    Console.WriteLine(\"Hello World\");\n  }\n}"
+      },
+      "C++": {
+        "main": "#include <iostream>\nusing namespace std;\n\nint main() {\n  cout << \"Hello World\" << endl;\n  return 0;\n}",
+        "cout": "std::cout <<  << std::endl;"
+      },
+      "C": {
+        "main": "#include <stdio.h>\n\nint main() {\n  printf(\"Hello World\\n\");\n  return 0;\n}",
+        "pf": "printf(\"\\n\");"
+      },
+      "CSS": {
+        "flex": "display: flex;\njustify-content: center;\nalign-items: center;",
+        "grid": "display: grid;\ngrid-template-columns: repeat(2, 1fr);\ngap: 16px;"
       }
-    }
+    };
 
-    async function saveFile() {
-      try {
-        const textToSave = editor ? editor.getValue() : textarea.value;
-        if (!fileHandle) {
-          fileHandle = await window.showSaveFilePicker({ suggestedName: currentFileName });
-          currentFileName = fileHandle.name;
-        }
-        const writable = await fileHandle.createWritable();
-        await writable.write(textToSave);
-        await writable.close();
-        updateStatus();
-      } catch (err) {
-        console.log("Save cancelled:", err);
-      }
-    }
-  </script>
-</body>
-</html>
+    const editor = CodeMirror.fromTextArea(textarea, {
+      theme: "dracula",
+      lineNumbers: true,
+      tabSize: 2,
+      indentUnit: 2,
+      indentWithTabs: false,
+      autoCloseBrackets: true,
+      autoCloseTags: true,
+      hintOptions: {
+        completeSingle: false
+      },
+      extraKeys: {
+        "Ctrl-Space": "autocomplete",
+        "Ctrl-S": () => saveFile(),
+        "Cmd-S": () => saveFile(),
+        "Ctrl-O": () => openFile(),
+        "Cmd-O": () => openFile(),
+        "Shift-Tab": "indentLess",
+        "Tab": function(cm) {
+          // 1. Accept active autocomplete suggestion
+          if (cm.state.completionActive) {
+            cm.state.completionActive.widget.pick();
+            return;
+          }
+
+          // 2. Check custom VS Code-style snippets before cursor
+          const cursor = cm.getCursor();
