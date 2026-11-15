@@ -43,6 +43,7 @@
       font-weight: 700;
       font-size: 1.05rem;
       text-decoration: none;
+      cursor: pointer;
       box-shadow: 0 10px 28px rgba(124, 58, 237, 0.45);
       border: 1px solid rgba(196, 181, 253, 0.35);
       transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -84,28 +85,33 @@
 
     <div class="btn-group">
       <a id="main-download-btn" href="https://github.com" class="btn-install">
-        Download Installer
+        Install JitterDev App
       </a>
       <a href="app.html" class="btn-secondary">Open Editor Now</a>
     </div>
 
-    <div id="os-label" class="os-detected">Detecting your operating system...</div>
+    <div id="os-label" class="os-detected">Detecting your device...</div>
 
     <div class="all-downloads">
-      <span>All Downloads:</span>
-      <a href="https://github.com/download/Jitter-Setup.exe">Windows (.exe)</a>
+      <span>Desktop Installers:</span>
+      <a href="https://github.com/latest/download/Jitter-Setup.exe">Windows (.exe)</a>
       <span>•</span>
-      <a href="https://github.com/download/Jitter-Mac.dmg">macOS (.dmg)</a>
+      <a href="https://github.com/latest/download/Jitter-Mac.dmg">macOS (.dmg)</a>
       <span>•</span>
-      <a href="https://github.com/download/Jitter-Chromebook.deb">Chromebook / Linux (.deb)</a>
+      <a href="https://github.com/latest/download/Jitter-Chromebook.deb">Chromebook / Linux (.deb)</a>
     </div>
   </div>
 
   <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js");
+    }
+
     const btn = document.getElementById("main-download-btn");
     const label = document.getElementById("os-label");
     const userAgent = navigator.userAgent.toLowerCase();
-    const releaseBase = "https://github.com/download";
+    const releaseBase = "https://github.com/latest/download";
+    let deferredPrompt = null;
 
     if (userAgent.includes("mac")) {
       btn.href = `${releaseBase}/Jitter-Mac.dmg`;
@@ -113,13 +119,30 @@
       label.textContent = "Detected macOS • Click to download Jitter-Mac.dmg";
     } else if (userAgent.includes("cros") || userAgent.includes("linux")) {
       btn.href = `${releaseBase}/Jitter-Chromebook.deb`;
-      btn.textContent = "Install JitterDev for Chromebook (.deb)";
-      label.textContent = "Detected Chromebook / Linux • Click to download Jitter-Chromebook.deb";
+      btn.textContent = "Install JitterDev for Chromebook";
+      label.textContent = "Detected Chromebook / Linux • Ready to install";
     } else {
       btn.href = `${releaseBase}/Jitter-Setup.exe`;
       btn.textContent = "Install JitterDev for Windows (.exe)";
       label.textContent = "Detected Windows PC • Click to download Jitter-Setup.exe";
     }
+
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      btn.href = "#";
+      btn.textContent = "Install JitterDev App";
+      label.textContent = "Click above to install JitterDev directly to your device";
+    });
+
+    btn.addEventListener("click", async (e) => {
+      if (deferredPrompt) {
+        e.preventDefault();
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+      }
+    });
   </script>
 </body>
 </html>
