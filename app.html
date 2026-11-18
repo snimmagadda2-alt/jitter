@@ -255,23 +255,25 @@
             return;
           }
 
-          // 2. Check custom VS Code-style snippets before cursor
-          const cursor = cm.getCursor();
-          const line = cm.getLine(cursor.line);
-          const beforeCursor = line.slice(0, cursor.ch);
-          const match = beforeCursor.match(/([a-zA-Z0-9_!]+)$/);
+          // 2. Strict check: Only expand snippets if the current active language matches
+          if (currentLang && languageSnippets[currentLang]) {
+            const cursor = cm.getCursor();
+            const line = cm.getLine(cursor.line);
+            const beforeCursor = line.slice(0, cursor.ch);
+            const match = beforeCursor.match(/([a-zA-Z0-9_!]+)$/);
 
-          if (match && languageSnippets[currentLang]) {
-            const trigger = match[1];
-            const expansion = languageSnippets[currentLang][trigger];
-            if (expansion !== undefined) {
-              const from = { line: cursor.line, ch: cursor.ch - trigger.length };
-              cm.replaceRange(expansion, from, cursor);
-              return;
+            if (match) {
+              const trigger = match[1];
+              const expansion = languageSnippets[currentLang][trigger];
+              if (expansion !== undefined) {
+                const from = { line: cursor.line, ch: cursor.ch - trigger.length };
+                cm.replaceRange(expansion, from, cursor);
+                return;
+              }
             }
           }
 
-          // 3. Try Emmet expansion for HTML/CSS if available
+          // 3. Try Emmet expansion strictly for HTML/CSS
           if ((currentLang === "HTML" || currentLang === "CSS") && typeof emmetCodeMirror !== "undefined") {
             try {
               if (cm.execCommand("emmetExpandAbbreviation") !== false) {
@@ -290,9 +292,11 @@
       }
     });
 
-    // Trigger autocomplete automatically while typing words
+    // Trigger autocomplete automatically only when a valid programming language is active
     editor.on("inputRead", (cm, change) => {
       if (change.origin !== "+input") return;
+      if (!currentLang || currentLang === "Plain Text") return;
+
       const char = change.text[0];
       if (/[a-zA-Z0-9_<.]/.test(char) && !cm.state.completionActive) {
         cm.showHint({ completeSingle: false });
