@@ -1,7 +1,7 @@
 {
   "name": "jitter-editor",
   "version": "1.0.0",
-  "description": "Fast, distraction-free code editor for PC, Mac, and Chromebook",
+  "description": "Fast, distraction-free code editor for PC, Mac, and Linux!",
   "author": "snimmagadda2-alt <snimmagadda2-alt@://github.com>",
   "license": "MIT",
   "main": "main.js",
