@@ -7,23 +7,24 @@
   <link rel="icon" type="image/png" href="icon.png" />
 
   <!-- CodeMirror Core & Dracula Theme -->
-  <link rel="stylesheet" href="https://cloudflare.com" />
-  <link rel="stylesheet" href="https://cloudflare.com" />
-  <link rel="stylesheet" href="https://cloudflare.com" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.css" />
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: system-ui, -apple-system, sans-serif;
-      background: #090910;
+      background: #0b0818;
       color: #ffffff;
       height: 100vh;
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
+
     header {
-      background: #12121c;
+      background: #120d26;
       padding: 10px 18px;
       display: flex;
       justify-content: space-between;
@@ -35,15 +36,16 @@
     .brand { font-weight: 800; font-size: 1.05rem; letter-spacing: -0.3px; }
     .status {
       font-size: 0.82rem;
-      color: #c4b5fd;
+      color: #a49bc8;
       margin-left: 10px;
       background: rgba(139, 92, 246, 0.14);
       padding: 4px 10px;
       border-radius: 6px;
     }
+
     .controls { display: flex; gap: 8px; }
     .controls button {
-      background: rgba(139, 92, 246, 0.16);
+      background: rgba(139, 92, 246, 0.18);
       color: #ffffff;
       border: 1px solid rgba(139, 92, 246, 0.35);
       padding: 7px 14px;
@@ -55,7 +57,7 @@
     }
     .controls button:hover { background: rgba(139, 92, 246, 0.3); }
     .controls button.primary {
-      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
       border: none;
     }
     .controls button.primary:hover { opacity: 0.92; }
@@ -63,34 +65,34 @@
     #editor-container { flex: 1; position: relative; overflow: hidden; }
     .CodeMirror {
       height: 100% !important;
-      font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+      font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
       font-size: 14.5px;
       line-height: 1.6;
-      background: #0d0d16 !important;
+      background: #0d0a1a !important;
     }
     .CodeMirror-gutters {
-      background: #0d0d16 !important;
-      border-right: 1px solid rgba(139, 92, 246, 0.15) !important;
+      background: #0d0a1a !important;
+      border-right: 1px solid rgba(139, 92, 246, 0.18) !important;
     }
 
     /* VS Code-Style Autocomplete Popup */
     .CodeMirror-hints {
-      background: #181826 !important;
+      background: #16102e !important;
       border: 1px solid rgba(139, 92, 246, 0.45) !important;
       border-radius: 8px !important;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6) !important;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6) !important;
       padding: 4px !important;
-      font-family: "JetBrains Mono", Consolas, monospace !important;
+      font-family: 'JetBrains Mono', Consolas, monospace !important;
       font-size: 13px !important;
       z-index: 9999 !important;
     }
     .CodeMirror-hint {
-      color: #e4e4e7 !important;
+      color: #d6cff2 !important;
       padding: 5px 10px !important;
       border-radius: 5px !important;
     }
     li.CodeMirror-hint-active {
-      background: #6d28d9 !important;
+      background: #7c3aed !important;
       color: #ffffff !important;
     }
 
@@ -98,26 +100,26 @@
     .lang-modal {
       position: fixed;
       inset: 0;
-      background: rgba(6, 6, 12, 0.84);
+      background: rgba(6, 4, 15, 0.84);
       backdrop-filter: blur(8px);
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 9000;
+      z-index: 9999;
     }
     .lang-modal.hidden { display: none; }
     .lang-box {
-      background: #161624;
-      border: 1px solid rgba(139, 92, 246, 0.4);
+      background: #140f29;
+      border: 1px solid rgba(139, 92, 246, 0.45);
       border-radius: 20px;
       padding: 32px;
       width: 90%;
       max-width: 440px;
       text-align: center;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
     }
     .lang-box h2 { font-size: 1.5rem; margin-bottom: 8px; }
-    .lang-box p { color: #a1a1aa; font-size: 0.92rem; margin-bottom: 24px; }
+    .lang-box p { color: #a49bc8; font-size: 0.92rem; margin-bottom: 24px; }
     .lang-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .lang-btn {
       background: rgba(139, 92, 246, 0.14);
@@ -132,7 +134,7 @@
     }
     .lang-btn:hover {
       background: #7c3aed;
-      border-color: #a78bfa;
+      border-color: #a855f7;
       transform: translateY(-2px);
     }
   </style>
@@ -145,9 +147,9 @@
       <span id="file-info" class="status">untitled • No language selected</span>
     </div>
     <div class="controls">
-      <button type="button" onclick="openFile()">Open File</button>
-      <button type="button" class="primary" onclick="saveFile()">Save File</button>
-      <button type="button" onclick="showModal()">Change Language</button>
+      <button onclick="openFile()">Open File</button>
+      <button class="primary" onclick="saveFile()">Save File</button>
+      <button onclick="showModal()">Change Language</button>
     </div>
   </header>
 
@@ -155,42 +157,40 @@
     <textarea id="code" placeholder="Start typing your code here..."></textarea>
   </div>
 
-  <!-- Hidden fallback input for Firefox / Safari -->
-  <input type="file" id="fallback-open" style="display: none;" />
-
   <!-- Language Selection Popup -->
   <div id="lang-modal" class="lang-modal">
     <div class="lang-box">
       <h2>Which coding language?</h2>
       <p>Choose a language to enable VS Code tab tricks, Emmet, and autocomplete suggestions.</p>
       <div class="lang-grid">
-        <button type="button" class="lang-btn" data-lang="HTML" data-mode="htmlmixed">HTML</button>
-        <button type="button" class="lang-btn" data-lang="CSS" data-mode="css">CSS</button>
-        <button type="button" class="lang-btn" data-lang="JavaScript" data-mode="javascript">JavaScript</button>
-        <button type="button" class="lang-btn" data-lang="C#" data-mode="text/x-csharp">C#</button>
-        <button type="button" class="lang-btn" data-lang="C++" data-mode="text/x-c++src">C++</button>
-        <button type="button" class="lang-btn" data-lang="C" data-mode="text/x-csrc">C</button>
+        <button class="lang-btn" data-lang="HTML" data-mode="htmlmixed">HTML</button>
+        <button class="lang-btn" data-lang="CSS" data-mode="css">CSS</button>
+        <button class="lang-btn" data-lang="JavaScript" data-mode="javascript">JavaScript</button>
+        <button class="lang-btn" data-lang="C#" data-mode="text/x-csharp">C#</button>
+        <button class="lang-btn" data-lang="C++" data-mode="text/x-c++src">C++</button>
+        <button class="lang-btn" data-lang="C" data-mode="text/x-csrc">C</button>
       </div>
     </div>
   </div>
 
   <!-- CodeMirror Core & Language Modes -->
-  <script src="https://cloudflare.com"></script>
-  <script src="https://cloudflare.com"></script>
-  <script src="https://cloudflare.com"></script>
-  <script src="https://cloudflare.com"></script>
-  <script src="https://cloudflare.com"></script>
-  <script src="https://cloudflare.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/clike/clike.min.js"></script>
 
   <!-- VS Code Tab Tricks: Autocomplete, Auto-Close Brackets/Tags & Emmet -->
-  <script src="https://cloudflare.com"></script>
-  <script src="https://cloudflare.com"></script>
-  <script src="https://cloudflare.com"></script>
-  <script src="https://cloudflare.com"></script>
-  <script src="https://cloudflare.com"></script>
-  <script src="https://cloudflare.com"></script>
-  <script src="https://cloudflare.com"></script>
-  <script src="https://jsdelivr.net"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/anyword-hint.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/xml-hint.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/html-hint.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/css-hint.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/javascript-hint.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closetag.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emmetio/codemirror-plugin@1.2.4/dist/browser.min.js"></script>
 
   <script>
     let fileHandle = null;
@@ -200,12 +200,11 @@
     const textarea = document.getElementById("code");
     const modal = document.getElementById("lang-modal");
     const fileInfo = document.getElementById("file-info");
-    const fallbackOpen = document.getElementById("fallback-open");
 
     // Language-specific snippets & keywords for Tab expansion
     const languageSnippets = {
       "HTML": {
-        "!": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Document</title>\n</head>\n<body>\n  \n</body>\n</html>"
+        "!": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n  <title>Document</title>\n</head>\n<body>\n  \n</body>\n</html>"
       },
       "JavaScript": {
         "clg": "console.log();",
@@ -215,14 +214,14 @@
       },
       "C#": {
         "cw": "Console.WriteLine();",
-        "main": "using System;\n\nclass Program {\n  static void Main() {\n    Console.WriteLine(\"Hello World\");\n  }\n}"
+        "main": "using System;\n\nclass Program {\n  static void Main() {\n    Console.WriteLine(\"Hello World!\");\n  }\n}"
       },
       "C++": {
-        "main": "#include <iostream>\nusing namespace std;\n\nint main() {\n  cout << \"Hello World\" << endl;\n  return 0;\n}",
+        "main": "#include <iostream>\nusing namespace std;\n\nint main() {\n  cout << \"Hello World!\" << endl;\n  return 0;\n}",
         "cout": "std::cout <<  << std::endl;"
       },
       "C": {
-        "main": "#include <stdio.h>\n\nint main() {\n  printf(\"Hello World\\n\");\n  return 0;\n}",
+        "main": "#include <stdio.h>\n\nint main() {\n  printf(\"Hello World!\\n\");\n  return 0;\n}",
         "pf": "printf(\"\\n\");"
       },
       "CSS": {
@@ -239,309 +238,65 @@
       indentWithTabs: false,
       autoCloseBrackets: true,
       autoCloseTags: true,
-      completeSingle: false,
+      hintOptions: {
+        completeSingle: false
+      },
       extraKeys: {
         "Ctrl-Space": "autocomplete",
-        "Ctrl-S": function () { saveFile(); },
-        "Cmd-S": function () { saveFile(); },
-        "Ctrl-O": function () { openFile(); },
-        Cmd-O": function () { openFile(); },
-"Tab": function (cm) {
-// 1. Accept active autocomplete suggestion
-if (cm.state.completionActive && cm.state.completionActive.widget) {
-cm.state.completionActive.widget.pick();
-return;
-}
-// 2. Indent if text is selected
-if (cm.somethingSelected()) {
-cm.indentSelection("add");
-return;
-}
-// 3. Check custom VS Code-style snippets before cursor
-const cursor = cm.getCursor();
-const line = cm.getLine(cursor.line);
-const before = line.slice(0, cursor.ch);
-const match = before.match(/(\S+)$/);
-if (match && languageSnippets[currentLang] && languageSnippets[currentLang][match[1]]) {
-const trigger = match[1];
-const expansion = languageSnippets[currentLang][trigger];
-cm.replaceRange(
-expansion,
-{ line: cursor.line, ch: cursor.ch - trigger.length },
-cursor
-);
-return;
-}
-// 4. Trigger Emmet in HTML/CSS if available
-if ((currentLang === "HTML" || currentLang === "CSS") && typeof emmetCodeMirror !== "undefined") {
-try {
-if (cm.execCommand("emmetExpandAbbreviation") !== false) return;
-} catch (e) {}
-}
-// 5. Fallback: insert 2 spaces
-cm.replaceSelection("  ", "end");
-},
-"Shift-Tab": "indentLess"
-}
-});
-// Enable Emmet if loaded
-if (typeof emmetCodeMirror !== "undefined") {
-try { emmetCodeMirror(editor); } catch (e) {}
-}
-// Trigger VS Code-style autocomplete popup while typing
-editor.on("inputRead", function (cm, change) {
-if (change.origin !== "+input") return;
-const ch = change.text[0];
-if (!ch || !/[a-zA-Z0-9_.-]/.test(ch)) return;
-if (cm.state.completionActive) return;
-cm.showHint({
-completeSingle: false,
-hint: CodeMirror.hint.auto || CodeMirror.hint.anyword
-});
-});
-function updateStatus() {
-fileInfo.textContent = ${currentFileName} • ${currentLang};
-}
-function showModal() {
-modal.classList.remove("hidden");
-}
-function hideModal() {
-modal.classList.add("hidden");
-editor.focus();
-}
-// Language Selection Modal Buttons
-document.querySelectorAll(".lang-btn").forEach((btn) => {
-btn.addEventListener("click", () => {
-currentLang = btn.dataset.lang;
-const mode = btn.dataset.mode;
-editor.setOption("mode", mode);
-updateStatus();
-hideModal();
-});
-});
-// Close modal when clicking outside the dialog box
-modal.addEventListener("click", (e) => {
-if (e.target === modal) hideModal();
-});
-// Detect language from opened file extension
-function detectLanguage(filename) {
-const ext = filename.split(".").pop().toLowerCase();
-const map = {
-html: { lang: "HTML", mode: "htmlmixed" },
-htm: { lang: "HTML", mode: "htmlmixed" },
-css: { lang: "CSS", mode: "css" },
-js: { lang: "JavaScript", mode: "javascript" },
-cs: { lang: "C#", mode: "text/x-csharp" },
-cpp: { lang: "C++", mode: "text/x-c++src" },
-cc: { lang: "C++", mode: "text/x-c++src" },
-c: { lang: "C", mode: "text/x-csrc" }
-};
-if (map[ext]) {
-currentLang = map[ext].lang;
-editor.setOption("mode", map[ext].mode);
-}
-}
-// Open File Button
-async function openFile() {
-if (window.showOpenFilePicker) {
-try {
-const [handle] = await window.showOpenFilePicker();
-fileHandle = handle;
-const file = await handle.getFile();
-const text = await file.text();
-currentFileName = file.name;
-editor.setValue(text);
-detectLanguage(currentFileName);
-updateStatus();
-hideModal();
-} catch (err) {
-if (err.name !== "AbortError") console.error(err);
-}
-} else {
-fallbackOpen.click();
-}
-}
-fallbackOpen.addEventListener("change", (e) => {
-const file = e.target.files[0];
-if (!file) return;
-const reader = new FileReader();
-reader.onload = (ev) => {
-fileHandle = null;
-currentFileName = file.name;
-editor.setValue(ev.target.result);
-detectLanguage(currentFileName);
-updateStatus();
-hideModal();
-};
-reader.readAsText(file);
-fallbackOpen.value = "";
-});
-// Save File Button
-async function saveFile() {
-const content = editor.getValue();
-const defaultNames = {
-"HTML": "index.html",
-"CSS": "style.css",
-"JavaScript": "script.js",
-"C#": "Program.cs",
-"C++": "main.cpp",
-"C": "main.c",
-"Plain Text": "untitled.txt"
-};
-const suggestedName = currentFileName !== "untitled"
-? currentFileName
-: (defaultNames[currentLang] || "untitled.txt");
-if (window.showSaveFilePicker) {
-try {
-if (!fileHandle) {
-fileHandle = await window.showSaveFilePicker({ suggestedName });
-}
-const writable = await fileHandle.createWritable();
-await writable.write(content);
-await writable.close();
-currentFileName = fileHandle.name;
-updateStatus();
-} catch (err) {
-if (err.name !== "AbortError") console.error(err);
-}
-} else {
-const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-const url = URL.createObjectURL(blob);
-const a = document.createElement("a");
-a.href = url;
-a.download = suggestedName;
-document.body.appendChild(a);
-a.click();
-document.body.removeChild(a);
-URL.revokeObjectURL(url);
-currentFileName = suggestedName;
-updateStatus();
-}
-}
-
-
-
-### Why Your Original Version Broke
-* **Placeholder CDN Links:** Your pasted snippet showed `src="https://cloudflare.com"` instead of the full `.js` and `.css` paths from `cdnjs.cloudflare.com`. If any script tag fails to load `CodeMirror`, `CodeMirror.fromTextArea` throws a `ReferenceError` and stops the rest of the `<script>` from registering `openFile`, `saveFile`, and `showModal`.
-* **Array Indexing in Snippet Lookup:** In `match = before.match(/(\S+)$/)`, `match` is an array where the matched word is `match[1]`. Accessing `languageSnippets[currentLang][match[1]]` ensures the snippet expands cleanly when you press `Tab`.
-
-<FollowUp>
-Once you commit this complete `app.html` to your GitHub repo and Vercel finishes redeploying, test **Open File**, **Save File**, and **Change Language** on `jitterdev.vercel.app/app.html` and let me know how it works!
-</FollowUp>
-
-    <script>
-    let fileHandle = null;
-    let currentFileName = "untitled";
-    let currentLang = "Plain Text";
-
-    const textarea = document.getElementById("code");
-    const modal = document.getElementById("lang-modal");
-    const fileInfo = document.getElementById("file-info");
-
-    // Language-specific snippets & keywords for Tab expansion
-    const languageSnippets = {
-      "HTML": {
-        "!": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Document</title>\n</head>\n<body>\n  \n</body>\n</html>"
-      },
-      "JavaScript": {
-        "clg": "console.log();",
-        "fn": "function name(params) {\n  \n}",
-        "afn": "const name = (params) => {\n  \n};",
-        "fori": "for (let i = 0; i < array.length; i++) {\n  \n}"
-      },
-      "C#": {
-        "cw": "Console.WriteLine();",
-        "main": "using System;\n\nclass Program {\n  static void Main() {\n    Console.WriteLine(\"Hello World\");\n  }\n}"
-      },
-      "C++": {
-        "main": "#include <iostream>\nusing namespace std;\n\nint main() {\n  cout << \"Hello World\" << endl;\n  return 0;\n}",
-        "cout": "std::cout <<  << std::endl;"
-      },
-      "C": {
-        "main": "#include <stdio.h>\n\nint main() {\n  printf(\"Hello World\\n\");\n  return 0;\n}",
-        "pf": "printf(\"\\n\");"
-      },
-      "CSS": {
-        "flex": "display: flex;\njustify-content: center;\nalign-items: center;",
-        "grid": "display: grid;\ngrid-template-columns: repeat(2, 1fr);\ngap: 16px;"
-      }
-    };
-
-    const editor = CodeMirror.fromTextArea(textarea, {
-      theme: "dracula",
-      lineNumbers: true,
-      tabSize: 2,
-      indentUnit: 2,
-      indentWithTabs: false,
-      autoCloseBrackets: true,
-      autoCloseTags: true,
-      completeSingle: false,
-      extraKeys: {
-        "Ctrl-Space": "autocomplete",
-        "Ctrl-S": function () { saveFile(); },
-        "Cmd-S": function () { saveFile(); },
-        "Ctrl-O": function () { openFile(); },
-        "Cmd-O": function () { openFile(); },
-        "Tab": function (cm) {
+        "Ctrl-S": () => saveFile(),
+        "Cmd-S": () => saveFile(),
+        "Ctrl-O": () => openFile(),
+        "Cmd-O": () => openFile(),
+        "Shift-Tab": "indentLess",
+        "Tab": (cm) => {
           // 1. Accept active autocomplete suggestion
-          if (cm.state.completionActive && cm.state.completionActive.widget) {
-            cm.state.completionActive.widget.pick();
+          if (cm.state.completionActive) {
+            cm.state.completionActive.pick();
             return;
           }
 
-          // 2. Indent if text is selected
-          if (cm.somethingSelected()) {
-            cm.indentSelection("add");
-            return;
-          }
-
-          // 3. Check custom VS Code-style snippets before cursor
+          // 2. Check custom VS Code-style snippets before cursor
           const cursor = cm.getCursor();
           const line = cm.getLine(cursor.line);
-          const before = line.slice(0, cursor.ch);
-          const match = before.match(/(\S+)$/);
+          const beforeCursor = line.slice(0, cursor.ch);
+          const match = beforeCursor.match(/([a-zA-Z0-9_!]+)$/);
 
-          if (match && languageSnippets[currentLang] && languageSnippets[currentLang][match[1]]) {
+          if (match && languageSnippets[currentLang]) {
             const trigger = match[1];
             const expansion = languageSnippets[currentLang][trigger];
-            cm.replaceRange(
-              expansion,
-              { line: cursor.line, ch: cursor.ch - trigger.length },
-              cursor
-            );
-            return;
+            if (expansion !== undefined) {
+              const from = { line: cursor.line, ch: cursor.ch - trigger.length };
+              cm.replaceRange(expansion, from, cursor);
+              return;
+            }
           }
 
-          // 4. Trigger Emmet in HTML/CSS if available
+          // 3. Try Emmet expansion for HTML/CSS if available
           if ((currentLang === "HTML" || currentLang === "CSS") && typeof emmetCodeMirror !== "undefined") {
             try {
-              if (cm.execCommand("emmetExpandAbbreviation") !== false) return;
+              if (cm.execCommand("emmetExpandAbbreviation") !== false) {
+                return;
+              }
             } catch (e) {}
           }
 
-          // 5. Fallback: insert 2 spaces
-          cm.replaceSelection("  ", "end");
-        },
-        "Shift-Tab": "indentLess"
+          // 4. Default tab spaces or selection indent
+          if (cm.somethingSelected()) {
+            cm.indentSelection("add");
+          } else {
+            cm.replaceSelection("  ", "end");
+          }
+        }
       }
     });
 
-    // Enable Emmet if loaded
-    if (typeof emmetCodeMirror !== "undefined") {
-      try { emmetCodeMirror(editor); } catch (e) {}
-    }
-
-    // Trigger VS Code-style autocomplete popup while typing
-    editor.on("inputRead", function (cm, change) {
+    // Trigger autocomplete automatically while typing words
+    editor.on("inputRead", (cm, change) => {
       if (change.origin !== "+input") return;
-      const ch = change.text[0];
-      if (!ch || !/[a-zA-Z0-9_.-]/.test(ch)) return;
-      if (cm.state.completionActive) return;
-
-      cm.showHint({
-        completeSingle: false,
-        hint: CodeMirror.hint.auto || CodeMirror.hint.anyword
-      });
+      const char = change.text[0];
+      if (/[a-zA-Z0-9_<.]/.test(char) && !cm.state.completionActive) {
+        cm.showHint({ completeSingle: false });
+      }
     });
 
     function updateStatus() {
@@ -549,130 +304,92 @@ Once you commit this complete `app.html` to your GitHub repo and Vercel finishes
     }
 
     function showModal() {
-      modal.style.display = "flex";
+      modal.classList.remove("hidden");
     }
 
-    function hideModal() {
-      modal.style.display = "none";
+    function setLanguage(lang, mode) {
+      currentLang = lang;
+      editor.setOption("mode", mode);
+      modal.classList.add("hidden");
+      updateStatus();
       editor.focus();
     }
 
-    // Language Selection Modal Buttons
     document.querySelectorAll(".lang-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
-        currentLang = btn.dataset.lang;
-        const mode = btn.dataset.mode;
-        editor.setOption("mode", mode);
-        updateStatus();
-        hideModal();
+        setLanguage(btn.dataset.lang, btn.dataset.mode);
       });
     });
 
-    // Close modal when clicking outside the dialog box
-    modal.addEventListener("click", (e) => {
-      if (e.target === modal) hideModal();
-    });
+    const extMap = {
+      html: { lang: "HTML", mode: "htmlmixed" },
+      htm: { lang: "HTML", mode: "htmlmixed" },
+      css: { lang: "CSS", mode: "css" },
+      js: { lang: "JavaScript", mode: "javascript" },
+      cs: { lang: "C#", mode: "text/x-csharp" },
+      cpp: { lang: "C++", mode: "text/x-c++src" },
+      c: { lang: "C", mode: "text/x-csrc" }
+    };
 
-    // Detect language from opened file extension
-    function detectLanguage(filename) {
-      const ext = filename.split(".").pop().toLowerCase();
-      const map = {
-        html: { lang: "HTML", mode: "htmlmixed" },
-        htm: { lang: "HTML", mode: "htmlmixed" },
-        css: { lang: "CSS", mode: "css" },
-        js: { lang: "JavaScript", mode: "javascript" },
-        cs: { lang: "C#", mode: "text/x-csharp" },
-        cpp: { lang: "C++", mode: "text/x-c++src" },
-        cc: { lang: "C++", mode: "text/x-c++src" },
-        c: { lang: "C", mode: "text/x-csrc" }
-      };
-      if (map[ext]) {
-        currentLang = map[ext].lang;
-        editor.setOption("mode", map[ext].mode);
-      }
-    }
-
-    // Open File Button
     async function openFile() {
-      if (window.showOpenFilePicker) {
-        try {
-          const [handle] = await window.showOpenFilePicker();
-          fileHandle = handle;
-          const file = await handle.getFile();
+      try {
+        if (window.showOpenFilePicker) {
+          [fileHandle] = await window.showOpenFilePicker();
+          const file = await fileHandle.getFile();
           const text = await file.text();
           currentFileName = file.name;
           editor.setValue(text);
-          detectLanguage(currentFileName);
-          updateStatus();
-          hideModal();
-        } catch (err) {
-          if (err.name !== "AbortError") console.error(err);
-        }
-      } else {
-        const input = document.createElement("input");
-        input.type = "file";
-        input.onchange = (e) => {
-          const file = e.target.files[0];
-          if (!file) return;
-          const reader = new FileReader();
-          reader.onload = (ev) => {
-            fileHandle = null;
-            currentFileName = file.name;
-            editor.setValue(ev.target.result);
-            detectLanguage(currentFileName);
+
+          const ext = file.name.split(".").pop().toLowerCase();
+          if (extMap[ext]) {
+            setLanguage(extMap[ext].lang, extMap[ext].mode);
+          } else {
             updateStatus();
-            hideModal();
+          }
+        } else {
+          const input = document.createElement("input");
+          input.type = "file";
+          input.onchange = async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            currentFileName = file.name;
+            editor.setValue(await file.text());
+            const ext = file.name.split(".").pop().toLowerCase();
+            if (extMap[ext]) setLanguage(extMap[ext].lang, extMap[ext].mode);
+            else updateStatus();
           };
-          reader.readAsText(file);
-        };
-        input.click();
+          input.click();
+        }
+      } catch (err) {
+        if (err.name !== "AbortError") console.error(err);
       }
     }
 
-    // Save File Button
     async function saveFile() {
       const content = editor.getValue();
-      const defaultNames = {
-        "HTML": "index.html",
-        "CSS": "style.css",
-        "JavaScript": "script.js",
-        "C#": "Program.cs",
-        "C++": "main.cpp",
-        "C": "main.c",
-        "Plain Text": "untitled.txt"
-      };
-      const suggestedName = currentFileName !== "untitled"
-        ? currentFileName
-        : (defaultNames[currentLang] || "untitled.txt");
-
-      if (window.showSaveFilePicker) {
-        try {
+      try {
+        if (window.showSaveFilePicker) {
           if (!fileHandle) {
-            fileHandle = await window.showSaveFilePicker({ suggestedName });
+            fileHandle = await window.showSaveFilePicker({
+              suggestedName: currentFileName === "untitled" ? "index.html" : currentFileName
+            });
           }
           const writable = await fileHandle.createWritable();
           await writable.write(content);
           await writable.close();
           currentFileName = fileHandle.name;
           updateStatus();
-        } catch (err) {
-          if (err.name !== "AbortError") console.error(err);
+        } else {
+          const blob = new Blob([content], { type: "text/plain" });
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = currentFileName === "untitled" ? "code.txt" : currentFileName;
+          a.click();
         }
-      } else {
-        const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = suggestedName;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        currentFileName = suggestedName;
-        updateStatus();
+      } catch (err) {
+        if (err.name !== "AbortError") console.error(err);
       }
     }
   </script>
 </body>
 </html>
-
