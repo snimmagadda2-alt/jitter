@@ -148,6 +148,7 @@
     </div>
     <div class="controls">
       <button onclick="openFile()">Open File</button>
+      <button onclick="goToMainMenu()">Get App</button>
       <button class="primary" onclick="saveFile()">Save File</button>
       <button onclick="showModal()">Change Language</button>
     </div>
@@ -254,7 +255,7 @@
             cm.showHint({ completeSingle: false });
             return;
           }
-          return CodeMirror.Pass; // Let normal cursor up happen if popup is already open or no language selected
+          return CodeMirror.Pass;
         },
         "Tab": (cm) => {
           // 1. Accept active autocomplete suggestion when pressing Tab
@@ -325,6 +326,10 @@
       modal.classList.add("hidden");
       updateStatus();
       editor.focus();
+    }
+
+    function goToMainMenu() {
+      window.location.href = "index.html";
     }
 
     document.querySelectorAll(".lang-btn").forEach((btn) => {
