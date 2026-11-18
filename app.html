@@ -248,8 +248,16 @@
         "Ctrl-O": () => openFile(),
         "Cmd-O": () => openFile(),
         "Shift-Tab": "indentLess",
+        // Up Arrow triggers autocomplete popup if not already active
+        "Up": (cm) => {
+          if (!cm.state.completionActive && currentLang && currentLang !== "Plain Text") {
+            cm.showHint({ completeSingle: false });
+            return;
+          }
+          return CodeMirror.Pass; // Let normal cursor up happen if popup is already open or no language selected
+        },
         "Tab": (cm) => {
-          // 1. Accept active autocomplete suggestion
+          // 1. Accept active autocomplete suggestion when pressing Tab
           if (cm.state.completionActive) {
             cm.state.completionActive.pick();
             return;
