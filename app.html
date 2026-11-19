@@ -13,129 +13,257 @@
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      color-scheme: dark;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
     body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: #0b0818;
-      color: #ffffff;
+      background: #090713;
+      color: #f4f1ff;
       height: 100vh;
+      height: 100dvh;
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
 
     header {
-      background: #120d26;
-      padding: 10px 18px;
+      min-height: 76px;
+      padding: 14px 28px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid rgba(139, 92, 246, 0.25);
+      gap: 24px;
+      background: linear-gradient(105deg, #171128, #100d1d 65%);
+      border-bottom: 1px solid #302546;
     }
-    .brand-wrap { display: flex; align-items: center; gap: 10px; }
-    .brand-icon { width: 28px; height: 28px; border-radius: 7px; }
-    .brand { font-weight: 800; font-size: 1.05rem; letter-spacing: -0.3px; }
+    .brand-wrap { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      border: 1px solid rgba(196, 181, 253, 0.25);
+      box-shadow: 0 0 22px rgba(139, 92, 246, 0.2);
+    }
+    .brand-copy { display: flex; flex-direction: column; gap: 2px; }
+    .brand { font-weight: 750; font-size: 1rem; letter-spacing: -0.04em; white-space: nowrap; }
+    .brand-caption { color: #82779c; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+    .header-divider { width: 1px; height: 30px; background: #352a48; margin: 0 8px; }
     .status {
-      font-size: 0.82rem;
-      color: #a49bc8;
-      margin-left: 10px;
-      background: rgba(139, 92, 246, 0.14);
-      padding: 4px 10px;
-      border-radius: 6px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+      font-size: 0.72rem;
+      color: #c8bddf;
     }
 
-    .controls { display: flex; gap: 8px; }
+    .controls { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
     .controls button {
-      background: rgba(139, 92, 246, 0.18);
-      color: #ffffff;
-      border: 1px solid rgba(139, 92, 246, 0.35);
-      padding: 7px 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 38px;
+      background: #201a31;
+      color: #ddd6ee;
+      border: 1px solid #3a304e;
+      padding: 0 13px;
       border-radius: 8px;
       cursor: pointer;
+      font: inherit;
       font-weight: 600;
-      font-size: 0.85rem;
-      transition: background 0.15s ease;
+      font-size: 0.75rem;
+      white-space: nowrap;
+      transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
     }
-    .controls button:hover { background: rgba(139, 92, 246, 0.3); }
+    .controls button svg { width: 15px; height: 15px; flex-shrink: 0; color: #b6a3df; }
+    .controls button:hover { background: #2c2243; border-color: #7056a0; color: #fff; transform: translateY(-1px); }
     .controls button.primary {
-      background: linear-gradient(135deg, #7c3aed, #a855f7);
-      border: none;
+      background: linear-gradient(135deg, #8b5cf6, #7040d7);
+      border-color: #a581f7;
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(124, 58, 237, 0.24);
     }
-    .controls button.primary:hover { opacity: 0.92; }
+    .controls button.primary svg { color: #fff; }
+    .controls button.primary:hover { background: linear-gradient(135deg, #9b70ff, #8051e6); }
+    button:focus-visible { outline: 2px solid #c4b5fd; outline-offset: 3px; }
 
-    #editor-container { flex: 1; position: relative; overflow: hidden; }
+    .workspace {
+      min-height: 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 18px 22px 0;
+      background: radial-gradient(ellipse at 50% 0%, #24163c 0%, #100b1c 48%, #0a0813 100%);
+    }
+    .workspace-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 0 3px 14px;
+    }
+    .workspace-label { color: #a698bf; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+    .workspace-label span { color: #65597c; padding: 0 9px; }
+    .workspace-indicator { color: #8d80a6; font-size: 0.67rem; white-space: nowrap; }
+    .workspace-indicator::before {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin-right: 7px;
+      border-radius: 50%;
+      background: #a78bfa;
+      box-shadow: 0 0 10px #a78bfa;
+      vertical-align: middle;
+    }
+    .editor-shell {
+      min-height: 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: #100c1b;
+      border: 1px solid #392b50;
+      border-bottom: 0;
+      border-radius: 12px 12px 0 0;
+      box-shadow: 0 16px 50px rgba(0, 0, 0, 0.25);
+    }
+    .editor-bar {
+      height: 44px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      background: #191225;
+      border-bottom: 1px solid #30243f;
+    }
+    .editor-tab { color: #e5dafa; font-size: 0.72rem; font-weight: 600; }
+    .editor-tab::before { content: "</>"; color: #ae8bff; font-family: Consolas, monospace; font-weight: 700; margin-right: 9px; }
+    .editor-hint { color: #766b8a; font-family: Consolas, monospace; font-size: 0.68rem; }
+    #editor-container { flex: 1; min-height: 0; position: relative; overflow: hidden; }
     .CodeMirror {
       height: 100% !important;
       font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
-      font-size: 14.5px;
-      line-height: 1.6;
-      background: #0d0a1a !important;
+      font-size: 14px;
+      line-height: 1.75;
+      background: #100c1b !important;
     }
+    .CodeMirror-lines { padding: 18px 0 !important; }
     .CodeMirror-gutters {
-      background: #0d0a1a !important;
-      border-right: 1px solid rgba(139, 92, 246, 0.18) !important;
+      background: #100c1b !important;
+      border-right: 1px solid #2c213d !important;
     }
+    .CodeMirror-linenumber { color: #645875 !important; padding: 0 14px 0 12px !important; }
+    .workspace-footer {
+      min-height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 4px;
+      color: #8a7da1;
+      font-size: 0.65rem;
+      letter-spacing: 0.02em;
+    }
+    .workspace-footer strong { color: #bba6e3; font-weight: 600; }
+    .creator-credit { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+    .creator-credit svg { width: 14px; height: 14px; color: #9b6ce3; flex-shrink: 0; }
 
-    /* VS Code-Style Autocomplete Popup */
     .CodeMirror-hints {
-      background: #16102e !important;
-      border: 1px solid rgba(139, 92, 246, 0.45) !important;
-      border-radius: 8px !important;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6) !important;
-      padding: 4px !important;
+      background: #1a132a !important;
+      border: 1px solid #594275 !important;
+      border-radius: 9px !important;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5) !important;
+      padding: 5px !important;
       font-family: 'JetBrains Mono', Consolas, monospace !important;
       font-size: 13px !important;
       z-index: 9999 !important;
     }
-    .CodeMirror-hint {
-      color: #d6cff2 !important;
-      padding: 5px 10px !important;
-      border-radius: 5px !important;
-    }
-    li.CodeMirror-hint-active {
-      background: #7c3aed !important;
-      color: #ffffff !important;
-    }
+    .CodeMirror-hint { color: #d6cff2 !important; padding: 6px 10px !important; border-radius: 5px !important; }
+    li.CodeMirror-hint-active { background: #7040d7 !important; color: #ffffff !important; }
 
-    /* Language Modal */
     .lang-modal {
       position: fixed;
       inset: 0;
-      background: rgba(6, 4, 15, 0.84);
+      background: rgba(6, 4, 15, 0.77);
       backdrop-filter: blur(8px);
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 20px;
+      overflow-y: auto;
       z-index: 9999;
     }
     .lang-modal.hidden { display: none; }
     .lang-box {
-      background: #140f29;
-      border: 1px solid rgba(139, 92, 246, 0.45);
-      border-radius: 20px;
-      padding: 32px;
-      width: 90%;
-      max-width: 440px;
-      text-align: center;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+      width: 100%;
+      max-width: 490px;
+      padding: 34px;
+      background: radial-gradient(circle at 50% 0%, #30204a, #171123 55%);
+      border: 1px solid #54406d;
+      border-radius: 18px;
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.55), 0 0 45px rgba(124, 58, 237, 0.1);
     }
-    .lang-box h2 { font-size: 1.5rem; margin-bottom: 8px; }
-    .lang-box p { color: #a49bc8; font-size: 0.92rem; margin-bottom: 24px; }
-    .lang-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    .lang-btn {
-      background: rgba(139, 92, 246, 0.14);
-      border: 1px solid rgba(139, 92, 246, 0.35);
-      color: #ffffff;
-      padding: 13px;
+    .modal-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 46px;
+      margin-bottom: 22px;
+      color: #d4c2ff;
+      background: #382254;
+      border: 1px solid #6e4d98;
       border-radius: 12px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: all 0.15s ease;
+      font: 700 16px Consolas, monospace;
     }
-    .lang-btn:hover {
-      background: #7c3aed;
-      border-color: #a855f7;
-      transform: translateY(-2px);
+    .modal-eyebrow { color: #b79aed; font-size: 0.62rem; font-weight: 750; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 9px; }
+    .lang-box h2 { font-size: 1.55rem; letter-spacing: -0.04em; margin-bottom: 9px; }
+    .lang-box p { color: #a79ab9; font-size: 0.84rem; line-height: 1.6; margin-bottom: 24px; }
+    .lang-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .lang-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+      background: #21182e;
+      border: 1px solid #403150;
+      color: #ece5f8;
+      padding: 12px;
+      border-radius: 10px;
+      font: inherit;
+      font-weight: 650;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+    }
+    .lang-btn:hover { background: #302043; border-color: #9a73d9; transform: translateY(-2px); }
+    .lang-mark {
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      color: #cfb9ff;
+      background: #3a2853;
+      border-radius: 7px;
+      font: 700 0.7rem Consolas, monospace;
+    }
+    .modal-footnote { margin-top: 20px; color: #847594; font-size: 0.7rem; text-align: center; }
+    @media (max-width: 850px) {
+      header { flex-wrap: wrap; gap: 12px; padding: 14px 18px; }
+      .brand-wrap { width: 100%; }
+      .controls { width: 100%; overflow-x: auto; padding-bottom: 2px; }
+      .workspace { padding: 14px 14px 0; }
+    }
+    @media (max-width: 480px) {
+      .lang-box { padding: 24px; }
+      .lang-grid { gap: 8px; }
+      .lang-btn { padding: 9px; gap: 8px; }
+      .editor-hint { display: none; }
     }
   </style>
 </head>
@@ -143,34 +271,48 @@
   <header>
     <div class="brand-wrap">
       <img src="icon.png" alt="Logo" class="brand-icon" />
-      <span class="brand">JitterDev</span>
+      <div class="brand-copy"><span class="brand">JitterDev</span><span class="brand-caption">Code workspace</span></div>
+      <span class="header-divider" aria-hidden="true"></span>
       <span id="file-info" class="status">untitled • No language selected</span>
     </div>
     <div class="controls">
-      <button onclick="openFile()">Open File</button>
-      <button onclick="goToMainMenu()">Get App</button>
-      <button class="primary" onclick="saveFile()">Save File</button>
-      <button onclick="showModal()">Change Language</button>
+      <button onclick="openFile()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Open File</button>
+      <button onclick="goToMainMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Get App</button>
+      <button class="primary" onclick="saveFile()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h12l4 4v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M7 3v6h10V3M7 21v-8h10v8"/></svg>Save File</button>
+      <button onclick="showModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 4l-4 16"/></svg>Change Language</button>
     </div>
   </header>
 
-  <div id="editor-container">
-    <textarea id="code" placeholder="Start typing your code here..."></textarea>
-  </div>
+  <main class="workspace">
+    <div class="workspace-top">
+      <div class="workspace-label">Workspace <span>/</span> Editor</div>
+      <div class="workspace-indicator">Your creative space</div>
+    </div>
+    <div class="editor-shell">
+      <div class="editor-bar"><span class="editor-tab">Editor</span><span class="editor-hint">Ctrl + Space for suggestions</span></div>
+      <div id="editor-container">
+        <textarea id="code" placeholder="Start typing your code here..."></textarea>
+      </div>
+    </div>
+    <div class="workspace-footer"><span><strong>JitterDev</strong> &nbsp; / &nbsp; Workspace</span><span class="creator-credit">Created By Suryansh <svg viewBox="0 0 24 24" fill="none" aria-label="Verified" role="img"><path fill="currentColor" d="M12 1.5c1.1 0 1.9 1.2 2.9 1.5 1 .3 2.4-.3 3.3.3.9.6.8 2.1 1.4 2.9.6.8 2.1 1.2 2.4 2.2.3 1-.6 2.2-.6 3.3s.9 2.3.6 3.3c-.3 1-1.8 1.4-2.4 2.2-.6.8-.5 2.3-1.4 2.9-.9.6-2.3 0-3.3.3-1 .3-1.8 1.5-2.9 1.5s-1.9-1.2-2.9-1.5c-1-.3-2.4.3-3.3-.3-.9-.6-.8-2.1-1.4-2.9-.6-.8-2.1-1.2-2.4-2.2-.3-1 .6-2.2.6-3.3s-.9-2.3-.6-3.3c.3-1 1.8-1.4 2.4-2.2.6-.8.5-2.3 1.4-2.9.9-.6 2.3 0 3.3-.3 1-.3 1.8-1.5 2.9-1.5Z"/><path d="m8 12 2.6 2.6L16.5 9" stroke="#100b1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+  </main>
 
   <!-- Language Selection Popup -->
   <div id="lang-modal" class="lang-modal">
     <div class="lang-box">
-      <h2>Which coding language?</h2>
-      <p>Choose a language to enable VS Code tab tricks, Emmet, and autocomplete suggestions.</p>
+      <div class="modal-icon" aria-hidden="true">&lt;/&gt;</div>
+      <div class="modal-eyebrow">Set up your workspace</div>
+      <h2>Choose your language</h2>
+      <p>Pick a language to enable autocomplete, snippets, and more while you code.</p>
       <div class="lang-grid">
-        <button class="lang-btn" data-lang="HTML" data-mode="htmlmixed">HTML</button>
-        <button class="lang-btn" data-lang="CSS" data-mode="css">CSS</button>
-        <button class="lang-btn" data-lang="JavaScript" data-mode="javascript">JavaScript</button>
-        <button class="lang-btn" data-lang="C#" data-mode="text/x-csharp">C#</button>
-        <button class="lang-btn" data-lang="C++" data-mode="text/x-c++src">C++</button>
-        <button class="lang-btn" data-lang="C" data-mode="text/x-csrc">C</button>
+        <button class="lang-btn" data-lang="HTML" data-mode="htmlmixed"><span class="lang-mark" aria-hidden="true">&lt;/&gt;</span>HTML</button>
+        <button class="lang-btn" data-lang="CSS" data-mode="css"><span class="lang-mark" aria-hidden="true">#</span>CSS</button>
+        <button class="lang-btn" data-lang="JavaScript" data-mode="javascript"><span class="lang-mark" aria-hidden="true">JS</span>JavaScript</button>
+        <button class="lang-btn" data-lang="C#" data-mode="text/x-csharp"><span class="lang-mark" aria-hidden="true">C#</span>C#</button>
+        <button class="lang-btn" data-lang="C++" data-mode="text/x-c++src"><span class="lang-mark" aria-hidden="true">C++</span>C++</button>
+        <button class="lang-btn" data-lang="C" data-mode="text/x-csrc"><span class="lang-mark" aria-hidden="true">C</span>C</button>
       </div>
+      <div class="modal-footnote">You can change this anytime from the toolbar.</div>
     </div>
   </div>
 
