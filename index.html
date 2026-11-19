@@ -18,7 +18,7 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 24px;
+      padding: 24px 24px 56px;
     }
     .container { max-width: 680px; width: 100%; }
     .app-logo {
@@ -65,6 +65,24 @@
     .all-downloads span { display: inline-block; margin-bottom: 6px; font-weight: 600; }
     .all-downloads a { color: #c4b5fd; text-decoration: none; margin: 0 8px; font-weight: 500; }
     .all-downloads a:hover { text-decoration: underline; color: #ffffff; }
+    .creator-credit {
+      position: fixed;
+      right: 16px;
+      bottom: 10px;
+      z-index: 10000;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 8px;
+      border-radius: 7px;
+      background: rgba(23, 17, 35, 0.92);
+      color: #d3c4eb;
+      font-size: 0.75rem;
+      font-weight: 600;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .creator-credit svg { width: 15px; height: 15px; color: #a779ec; flex-shrink: 0; }
   </style>
 </head>
 <body>
@@ -100,6 +118,8 @@
       <a id="dl-deb" href="#">Chromebook / Linux (.deb)</a>
     </div>
   </div>
+
+  <span class="creator-credit">Created By Suryansh <svg viewBox="0 0 24 24" fill="none" aria-label="Verified" role="img"><path fill="currentColor" d="M12 1.5c1.1 0 1.9 1.2 2.9 1.5 1 .3 2.4-.3 3.3.3.9.6.8 2.1 1.4 2.9.6.8 2.1 1.2 2.4 2.2.3 1-.6 2.2-.6 3.3s.9 2.3.6 3.3c-.3 1-1.8 1.4-2.4 2.2-.6.8-.5 2.3-1.4 2.9-.9.6-2.3 0-3.3.3-1 .3-1.8 1.5-2.9 1.5s-1.9-1.2-2.9-1.5c-1-.3-2.4.3-3.3-.3-.9-.6-.8-2.1-1.4-2.9-.6-.8-2.1-1.2-2.4-2.2-.3-1 .6-2.2.6-3.3s-.9-2.3-.6-3.3c.3-1 1.8-1.4 2.4-2.2.6-.8.5-2.3 1.4-2.9.9-.6 2.3 0 3.3-.3 1-.3 1.8-1.5 2.9-1.5Z"/><path d="m8 12 2.6 2.6L16.5 9" stroke="#100b1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
 
   <script>
     const getAssetUrl = (filename) => {

@@ -169,8 +169,24 @@
       letter-spacing: 0.02em;
     }
     .workspace-footer strong { color: #bba6e3; font-weight: 600; }
-    .creator-credit { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
-    .creator-credit svg { width: 14px; height: 14px; color: #9b6ce3; flex-shrink: 0; }
+    .creator-credit {
+      position: fixed;
+      right: 16px;
+      bottom: 10px;
+      z-index: 10000;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 8px;
+      border-radius: 7px;
+      background: rgba(23, 17, 35, 0.92);
+      color: #d3c4eb;
+      font-size: 0.75rem;
+      font-weight: 600;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .creator-credit svg { width: 15px; height: 15px; color: #a779ec; flex-shrink: 0; }
 
     .CodeMirror-hints {
       background: #1a132a !important;
@@ -193,7 +209,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 20px 20px 55px;
       overflow-y: auto;
       z-index: 9999;
     }
@@ -294,7 +310,7 @@
         <textarea id="code" placeholder="Start typing your code here..."></textarea>
       </div>
     </div>
-    <div class="workspace-footer"><span><strong>JitterDev</strong> &nbsp; / &nbsp; Workspace</span><span class="creator-credit">Created By Suryansh <svg viewBox="0 0 24 24" fill="none" aria-label="Verified" role="img"><path fill="currentColor" d="M12 1.5c1.1 0 1.9 1.2 2.9 1.5 1 .3 2.4-.3 3.3.3.9.6.8 2.1 1.4 2.9.6.8 2.1 1.2 2.4 2.2.3 1-.6 2.2-.6 3.3s.9 2.3.6 3.3c-.3 1-1.8 1.4-2.4 2.2-.6.8-.5 2.3-1.4 2.9-.9.6-2.3 0-3.3.3-1 .3-1.8 1.5-2.9 1.5s-1.9-1.2-2.9-1.5c-1-.3-2.4.3-3.3-.3-.9-.6-.8-2.1-1.4-2.9-.6-.8-2.1-1.2-2.4-2.2-.3-1 .6-2.2.6-3.3s-.9-2.3-.6-3.3c.3-1 1.8-1.4 2.4-2.2.6-.8.5-2.3 1.4-2.9.9-.6 2.3 0 3.3-.3 1-.3 1.8-1.5 2.9-1.5Z"/><path d="m8 12 2.6 2.6L16.5 9" stroke="#100b1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+    <div class="workspace-footer"><span><strong>JitterDev</strong> &nbsp; / &nbsp; Workspace</span></div>
   </main>
 
   <!-- Language Selection Popup -->
@@ -315,6 +331,8 @@
       <div class="modal-footnote">You can change this anytime from the toolbar.</div>
     </div>
   </div>
+
+  <span class="creator-credit">Created By Suryansh <svg viewBox="0 0 24 24" fill="none" aria-label="Verified" role="img"><path fill="currentColor" d="M12 1.5c1.1 0 1.9 1.2 2.9 1.5 1 .3 2.4-.3 3.3.3.9.6.8 2.1 1.4 2.9.6.8 2.1 1.2 2.4 2.2.3 1-.6 2.2-.6 3.3s.9 2.3.6 3.3c-.3 1-1.8 1.4-2.4 2.2-.6.8-.5 2.3-1.4 2.9-.9.6-2.3 0-3.3.3-1 .3-1.8 1.5-2.9 1.5s-1.9-1.2-2.9-1.5c-1-.3-2.4.3-3.3-.3-.9-.6-.8-2.1-1.4-2.9-.6-.8-2.1-1.2-2.4-2.2-.3-1 .6-2.2.6-3.3s-.9-2.3-.6-3.3c.3-1 1.8-1.4 2.4-2.2.6-.8.5-2.3 1.4-2.9.9-.6 2.3 0 3.3-.3 1-.3 1.8-1.5 2.9-1.5Z"/><path d="m8 12 2.6 2.6L16.5 9" stroke="#100b1c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
 
   <!-- CodeMirror Core & Language Modes -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
