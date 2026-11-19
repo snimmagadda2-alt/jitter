@@ -34,8 +34,10 @@
       justify-content: space-between;
       align-items: center;
       gap: 24px;
-      background: linear-gradient(105deg, #171128, #100d1d 65%);
-      border-bottom: 1px solid #302546;
+      background: linear-gradient(115deg, rgba(51, 34, 78, 0.88), rgba(22, 16, 38, 0.94));
+      border-bottom: 1px solid rgba(205, 181, 255, 0.2);
+      box-shadow: inset 0 1px rgba(255, 255, 255, 0.1), 0 8px 32px rgba(5, 2, 15, 0.18);
+      backdrop-filter: blur(20px) saturate(140%);
     }
     .brand-wrap { display: flex; align-items: center; gap: 12px; min-width: 0; }
     .brand-icon {
@@ -65,9 +67,8 @@
       justify-content: center;
       gap: 8px;
       min-height: 38px;
-      background: #201a31;
       color: #ddd6ee;
-      border: 1px solid #3a304e;
+      border: 1px solid rgba(217, 193, 255, 0.3);
       padding: 0 13px;
       border-radius: 8px;
       cursor: pointer;
@@ -75,18 +76,12 @@
       font-weight: 600;
       font-size: 0.75rem;
       white-space: nowrap;
-      transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
     }
     .controls button svg { width: 15px; height: 15px; flex-shrink: 0; color: #b6a3df; }
-    .controls button:hover { background: #2c2243; border-color: #7056a0; color: #fff; transform: translateY(-1px); }
     .controls button.primary {
-      background: linear-gradient(135deg, #8b5cf6, #7040d7);
-      border-color: #a581f7;
       color: #fff;
-      box-shadow: 0 4px 18px rgba(124, 58, 237, 0.24);
     }
     .controls button.primary svg { color: #fff; }
-    .controls button.primary:hover { background: linear-gradient(135deg, #9b70ff, #8051e6); }
     button:focus-visible { outline: 2px solid #c4b5fd; outline-offset: 3px; }
 
     .workspace {
@@ -95,7 +90,8 @@
       display: flex;
       flex-direction: column;
       padding: 18px 22px 0;
-      background: radial-gradient(ellipse at 50% 0%, #24163c 0%, #100b1c 48%, #0a0813 100%);
+      background: radial-gradient(ellipse at 15% 0%, rgba(116, 58, 175, 0.35), transparent 45%),
+                  radial-gradient(ellipse at 90% 80%, rgba(67, 45, 130, 0.28), transparent 45%), #100b1c;
     }
     .workspace-top {
       display: flex;
@@ -124,11 +120,12 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      background: #100c1b;
-      border: 1px solid #392b50;
+      background: rgba(16, 12, 27, 0.88);
+      border: 1px solid rgba(188, 153, 230, 0.25);
       border-bottom: 0;
       border-radius: 12px 12px 0 0;
-      box-shadow: 0 16px 50px rgba(0, 0, 0, 0.25);
+      box-shadow: inset 0 1px rgba(255, 255, 255, 0.12), 0 20px 55px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(18px);
     }
     .editor-bar {
       height: 44px;
@@ -137,14 +134,14 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 18px;
-      background: #191225;
+      background: linear-gradient(110deg, rgba(110, 79, 148, 0.23), rgba(32, 23, 49, 0.7));
       border-bottom: 1px solid #30243f;
     }
     .editor-tab { color: #e5dafa; font-size: 0.72rem; font-weight: 600; }
     .editor-tab::before { content: "</>"; color: #ae8bff; font-family: Consolas, monospace; font-weight: 700; margin-right: 9px; }
     .editor-hint { color: #766b8a; font-family: Consolas, monospace; font-size: 0.68rem; }
     #editor-container { flex: 1; min-height: 0; position: relative; overflow: hidden; }
-    .CodeMirror {
+    .cm-s-dracula.CodeMirror {
       height: 100% !important;
       font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
       font-size: 14px;
@@ -152,7 +149,7 @@
       background: #100c1b !important;
     }
     .CodeMirror-lines { padding: 18px 0 !important; }
-    .CodeMirror-gutters {
+    .cm-s-dracula .CodeMirror-gutters {
       background: #100c1b !important;
       border-right: 1px solid #2c213d !important;
     }
@@ -218,10 +215,11 @@
       width: 100%;
       max-width: 490px;
       padding: 34px;
-      background: radial-gradient(circle at 50% 0%, #30204a, #171123 55%);
-      border: 1px solid #54406d;
+      background: linear-gradient(145deg, rgba(79, 53, 110, 0.91), rgba(24, 17, 38, 0.95));
+      border: 1px solid rgba(217, 193, 255, 0.28);
       border-radius: 18px;
-      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.55), 0 0 45px rgba(124, 58, 237, 0.1);
+      box-shadow: inset 0 1px rgba(255, 255, 255, 0.2), 0 28px 80px rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(24px) saturate(150%);
     }
     .modal-icon {
       display: flex;
@@ -245,8 +243,7 @@
       align-items: center;
       gap: 12px;
       text-align: left;
-      background: #21182e;
-      border: 1px solid #403150;
+      border: 1px solid rgba(217, 193, 255, 0.3);
       color: #ece5f8;
       padding: 12px;
       border-radius: 10px;
@@ -254,9 +251,7 @@
       font-weight: 650;
       font-size: 0.82rem;
       cursor: pointer;
-      transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
     }
-    .lang-btn:hover { background: #302043; border-color: #9a73d9; transform: translateY(-2px); }
     .lang-mark {
       display: grid;
       place-items: center;
@@ -269,10 +264,45 @@
       font: 700 0.7rem Consolas, monospace;
     }
     .modal-footnote { margin-top: 20px; color: #847594; font-size: 0.7rem; text-align: center; }
+    .controls button, .lang-btn {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(145deg, rgba(167, 135, 214, 0.22), rgba(62, 42, 91, 0.35));
+      border-color: rgba(217, 193, 255, 0.3);
+      box-shadow: inset 0 1px rgba(255, 255, 255, 0.2), inset 0 -1px rgba(86, 53, 126, 0.25), 0 6px 16px rgba(8, 4, 20, 0.2);
+      backdrop-filter: blur(14px) saturate(150%);
+      transition: transform 0.3s cubic-bezier(.2, .8, .2, 1), border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    }
+    .controls button::after, .lang-btn::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(110deg, transparent 20%, rgba(255, 255, 255, 0.22) 48%, transparent 75%);
+      transform: translateX(-150%);
+      transition: transform 0.65s cubic-bezier(.2, .7, .2, 1);
+    }
+    .controls button:hover, .lang-btn:hover {
+      background: linear-gradient(145deg, rgba(190, 157, 244, 0.32), rgba(93, 59, 137, 0.48));
+      border-color: rgba(228, 209, 255, 0.65);
+      box-shadow: inset 0 1px rgba(255, 255, 255, 0.3), 0 8px 24px rgba(132, 76, 205, 0.25);
+      transform: translateY(-2px);
+    }
+    .controls button:hover::after, .lang-btn:hover::after { transform: translateX(150%); }
+    .controls button:active, .lang-btn:active { transform: translateY(0) scale(0.97); }
+    .controls button.primary {
+      background: linear-gradient(145deg, rgba(180, 143, 255, 0.85), rgba(100, 55, 180, 0.88));
+      border-color: rgba(231, 215, 255, 0.55);
+    }
+    .controls button.primary:hover { background: linear-gradient(145deg, rgba(202, 173, 255, 0.95), rgba(122, 71, 206, 0.95)); }
+    @media (prefers-reduced-motion: reduce) {
+      .controls button, .lang-btn, .controls button::after, .lang-btn::after { transition: none; }
+      .controls button:hover, .lang-btn:hover, .controls button:active, .lang-btn:active { transform: none; }
+    }
     @media (max-width: 850px) {
       header { flex-wrap: wrap; gap: 12px; padding: 14px 18px; }
       .brand-wrap { width: 100%; }
-      .controls { width: 100%; overflow-x: auto; padding-bottom: 2px; }
+      .controls { width: 100%; flex-wrap: wrap; }
       .workspace { padding: 14px 14px 0; }
     }
     @media (max-width: 480px) {

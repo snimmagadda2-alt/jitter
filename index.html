@@ -11,7 +11,8 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: radial-gradient(circle at top, #181828, #090910 65%);
+      background: radial-gradient(ellipse at 20% 10%, rgba(112, 66, 156, 0.35), transparent 45%),
+                  radial-gradient(ellipse at 80% 85%, rgba(71, 46, 132, 0.32), transparent 45%), #0c0917;
       color: #ffffff;
       min-height: 100vh;
       display: flex;
@@ -20,7 +21,16 @@
       text-align: center;
       padding: 24px 24px 56px;
     }
-    .container { max-width: 680px; width: 100%; }
+    .container {
+      max-width: 680px;
+      width: 100%;
+      padding: 40px 28px;
+      background: linear-gradient(145deg, rgba(125, 100, 160, 0.18), rgba(30, 22, 45, 0.45));
+      border: 1px solid rgba(222, 200, 255, 0.2);
+      border-radius: 28px;
+      box-shadow: inset 0 1px rgba(255, 255, 255, 0.16), 0 24px 70px rgba(0, 0, 0, 0.28);
+      backdrop-filter: blur(24px) saturate(150%);
+    }
     .app-logo {
       width: 112px;
       height: 112px;
@@ -32,34 +42,48 @@
     h1 { font-size: 3.4rem; font-weight: 800; margin-bottom: 12px; letter-spacing: -1px; }
     p { max-width: 560px; color: #a1a1aa; font-size: 1.15rem; line-height: 1.6; margin: 0 auto 22px; }
     .lang-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 32px; }
-    .pill { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); padding: 6px 14px; border-radius: 999px; font-size: 0.85rem; color: #d4d4d8; }
+    .pill {
+      background: linear-gradient(145deg, rgba(188, 159, 226, 0.18), rgba(71, 48, 99, 0.22));
+      border: 1px solid rgba(218, 197, 249, 0.22);
+      box-shadow: inset 0 1px rgba(255, 255, 255, 0.1);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      color: #d4d4d8;
+    }
     .btn-group { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
-    .btn-install {
-      background: linear-gradient(135deg, #7c3aed, #4f46e5);
-      color: #ffffff;
-      padding: 15px 30px;
+    .btn-install, .btn-secondary {
+      position: relative;
+      overflow: hidden;
+      color: #fff;
+      padding: 15px 28px;
+      border: 1px solid rgba(227, 207, 255, 0.35);
       border-radius: 14px;
-      font-weight: 700;
       font-size: 1.05rem;
+      font-weight: 600;
       text-decoration: none;
       cursor: pointer;
-      box-shadow: 0 10px 28px rgba(124, 58, 237, 0.45);
-      border: 1px solid rgba(196, 181, 253, 0.35);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      background: linear-gradient(145deg, rgba(185, 156, 224, 0.25), rgba(73, 51, 105, 0.35));
+      box-shadow: inset 0 1px rgba(255, 255, 255, 0.25), 0 8px 24px rgba(7, 4, 17, 0.2);
+      backdrop-filter: blur(14px) saturate(150%);
+      transition: transform 0.3s cubic-bezier(.2, .8, .2, 1), border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
     }
-    .btn-install:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(124, 58, 237, 0.65); }
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.08);
-      color: #ffffff;
-      padding: 15px 28px;
-      border-radius: 14px;
-      font-weight: 600;
-      font-size: 1.05rem;
-      text-decoration: none;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      transition: background 0.15s ease;
+    .btn-install { padding-inline: 30px; font-weight: 700; background: linear-gradient(145deg, rgba(180, 143, 255, 0.85), rgba(100, 55, 180, 0.88)); border-color: rgba(231, 215, 255, 0.55); box-shadow: inset 0 1px rgba(255, 255, 255, 0.3), 0 8px 24px rgba(124, 58, 237, 0.35); }
+    .btn-install::after, .btn-secondary::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(110deg, transparent 20%, rgba(255, 255, 255, 0.25) 48%, transparent 75%);
+      transform: translateX(-150%);
+      transition: transform 0.65s cubic-bezier(.2, .7, .2, 1);
     }
-    .btn-secondary:hover { background: rgba(255, 255, 255, 0.14); }
+    .btn-install:hover, .btn-secondary:hover { transform: translateY(-2px); }
+    .btn-secondary:hover { background: linear-gradient(145deg, rgba(207, 180, 255, 0.35), rgba(102, 68, 147, 0.5)); border-color: rgba(239, 226, 255, 0.65); box-shadow: inset 0 1px rgba(255, 255, 255, 0.3), 0 10px 28px rgba(132, 76, 205, 0.25); }
+    .btn-install:hover { background: linear-gradient(145deg, rgba(202, 173, 255, 0.95), rgba(122, 71, 206, 0.95)); border-color: rgba(239, 226, 255, 0.75); box-shadow: inset 0 1px rgba(255, 255, 255, 0.35), 0 10px 28px rgba(132, 76, 205, 0.4); }
+    .btn-install:hover::after, .btn-secondary:hover::after { transform: translateX(150%); }
+    .btn-install:active, .btn-secondary:active { transform: translateY(0) scale(0.97); }
+    .btn-install:focus-visible, .btn-secondary:focus-visible { outline: 2px solid #c4b5fd; outline-offset: 3px; }
     .os-detected { margin-top: 16px; font-size: 0.9rem; color: #a78bfa; }
     .all-downloads { margin-top: 28px; padding-top: 22px; border-top: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.9rem; color: #71717a; }
     .all-downloads span { display: inline-block; margin-bottom: 6px; font-weight: 600; }
@@ -83,6 +107,11 @@
       pointer-events: none;
     }
     .creator-credit svg { width: 15px; height: 15px; color: #a779ec; flex-shrink: 0; }
+    @media (prefers-reduced-motion: reduce) {
+      .btn-secondary, .btn-secondary::after, .btn-install, .btn-install::after { transition: none; }
+      .btn-secondary:hover, .btn-secondary:active, .btn-install:hover, .btn-install:active { transform: none; }
+    }
+    @media (max-width: 480px) { .container { padding: 32px 18px; } }
   </style>
 </head>
 <body>
