@@ -311,9 +311,186 @@
       .lang-btn { padding: 9px; gap: 8px; }
       .editor-hint { display: none; }
     }
+
+    /* ---------- Boot / loading screen ---------- */
+    html.is-booting, html.is-booting body { overflow: hidden; }
+    html.is-booting body > header,
+    html.is-booting body > main { opacity: 0; transform: translateY(16px); }
+    body > header, body > main { transition: opacity 0.85s ease 0.1s, transform 0.85s ease 0.1s; }
+
+    .boot-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 20000;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: radial-gradient(ellipse at 50% 40%, rgba(96, 55, 165, 0.55), transparent 62%), #0a0714;
+      transition: opacity 0.9s ease, transform 0.9s ease, filter 0.9s ease;
+    }
+    .boot-screen.is-done { opacity: 0; transform: scale(1.06); filter: blur(8px); pointer-events: none; }
+
+    .boot-blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.55; }
+    .boot-blob.one { width: 48vmax; height: 48vmax; left: -14vmax; top: -16vmax; background: radial-gradient(circle, rgba(139, 92, 246, 0.6), transparent 68%); animation: bootFloat 11s ease-in-out infinite; }
+    .boot-blob.two { width: 42vmax; height: 42vmax; right: -12vmax; bottom: -14vmax; background: radial-gradient(circle, rgba(76, 29, 149, 0.7), transparent 68%); animation: bootFloat 14s ease-in-out infinite reverse; }
+    .boot-blob.three { width: 26vmax; height: 26vmax; right: 12vmax; top: 6vmax; background: radial-gradient(circle, rgba(196, 181, 253, 0.3), transparent 70%); animation: bootFloat 9s ease-in-out infinite 0.8s; }
+    @keyframes bootFloat {
+      0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(4vmax, 3vmax, 0) scale(1.14); }
+    }
+
+    .boot-grid {
+      position: absolute;
+      inset: -25%;
+      background-image: linear-gradient(rgba(196, 181, 253, 0.09) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(196, 181, 253, 0.09) 1px, transparent 1px);
+      background-size: 56px 56px;
+      -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 0%, transparent 66%);
+      mask-image: radial-gradient(ellipse at 50% 50%, #000 0%, transparent 66%);
+      animation: bootGrid 9s linear infinite;
+    }
+    @keyframes bootGrid { to { transform: translate3d(56px, 56px, 0); } }
+
+    .boot-core { position: relative; z-index: 2; width: min(92vw, 460px); padding: 0 10px; text-align: center; }
+
+    .boot-logo-wrap { position: relative; display: grid; place-items: center; width: 132px; height: 132px; margin: 0 auto 26px; }
+    .boot-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1px solid rgba(196, 181, 253, 0.5);
+      box-shadow: inset 0 0 30px rgba(139, 92, 246, 0.35);
+      animation: bootRing 2.8s ease-out infinite;
+    }
+    .boot-ring.second { animation-delay: 1.4s; }
+    @keyframes bootRing {
+      0% { transform: scale(0.72); opacity: 0.9; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+    .boot-logo {
+      width: 112px;
+      height: 112px;
+      border-radius: 26px;
+      border: 1px solid rgba(196, 181, 253, 0.5);
+      animation: bootPulse 2.6s ease-in-out infinite;
+    }
+    @keyframes bootPulse {
+      0%, 100% { transform: translateY(0) scale(1); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 18px 46px rgba(124, 58, 237, 0.35); }
+      50% { transform: translateY(-7px) scale(1.03); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14), 0 30px 74px rgba(139, 92, 246, 0.6); }
+    }
+
+    .boot-title {
+      font-size: clamp(2rem, 7vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: linear-gradient(100deg, #ffffff 0%, #d8b4fe 26%, #9333ea 48%, #ede9fe 72%, #ffffff 100%);
+      background-size: 240% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      animation: bootSheen 4.5s linear infinite;
+    }
+    @keyframes bootSheen { to { background-position: 240% 0; } }
+
+    .boot-tagline { margin-top: 8px; font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: #a78bfa; }
+
+    .boot-progress {
+      position: relative;
+      height: 6px;
+      margin: 34px auto 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid rgba(196, 181, 253, 0.2);
+      box-shadow: inset 0 1px rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+    .boot-progress-fill {
+      display: block;
+      position: relative;
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #6d28d9, #a78bfa 60%, #ede9fe);
+      box-shadow: 0 0 18px rgba(167, 139, 250, 0.85);
+    }
+    .boot-progress-fill::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 15%, rgba(255, 255, 255, 0.7) 48%, transparent 82%);
+      transform: translateX(-100%);
+      animation: bootShimmer 1.6s ease-in-out infinite;
+    }
+    @keyframes bootShimmer { to { transform: translateX(100%); } }
+
+    .boot-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #a1a1aa;
+    }
+    #boot-status { transition: opacity 0.24s ease, transform 0.24s ease; }
+    #boot-status.swap { opacity: 0; transform: translateY(-5px); }
+    #boot-percent { color: #e9d5ff; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+    .boot-skip {
+      position: absolute;
+      bottom: 30px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      color: rgba(167, 139, 250, 0.65);
+      animation: bootSkipIn 0.8s ease 1.4s both;
+    }
+    @keyframes bootSkipIn { from { opacity: 0; } to { opacity: 1; } }
+
+    @media (max-width: 480px) {
+      .boot-logo-wrap { width: 112px; height: 112px; margin-bottom: 20px; }
+      .boot-logo { width: 92px; height: 92px; border-radius: 22px; }
+      .boot-progress { margin-top: 28px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .boot-blob, .boot-grid, .boot-ring, .boot-logo, .boot-title, .boot-progress-fill::after, .boot-skip { animation: none !important; }
+      .boot-screen { transition-duration: 0.3s; }
+      body > header, body > main { transition-duration: 0.3s; }
+    }
   </style>
 </head>
 <body>
+  <div id="boot-screen" class="boot-screen" aria-hidden="true">
+    <span class="boot-blob one"></span>
+    <span class="boot-blob two"></span>
+    <span class="boot-blob three"></span>
+    <span class="boot-grid"></span>
+
+    <div class="boot-core">
+      <div class="boot-logo-wrap">
+        <span class="boot-ring"></span>
+        <span class="boot-ring second"></span>
+        <img src="icon.png" alt="" class="boot-logo" />
+      </div>
+      <div class="boot-title">JitterDev</div>
+      <div class="boot-tagline">Code Workspace</div>
+      <div class="boot-progress"><span id="boot-fill" class="boot-progress-fill"></span></div>
+      <div class="boot-meta">
+        <span id="boot-status">Waking the engine</span>
+        <span id="boot-percent">0%</span>
+      </div>
+    </div>
+
+    <span class="boot-skip">Click anywhere to skip</span>
+  </div>
+
   <header>
     <div class="brand-wrap">
       <img src="icon.png" alt="Logo" class="brand-icon" />
@@ -597,6 +774,108 @@
         if (err.name !== "AbortError") console.error(err);
       }
     }
+  </script>
+
+  <script>
+    (function () {
+      const screen = document.getElementById("boot-screen");
+      if (!screen) return;
+
+      // The intro plays once per page per tab, so a reload in the same session skips it.
+      const pageId = location.pathname.replace(/^\/+|\/+$/g, "").replace(/index\.html$/, "") || "home";
+      const seenKey = "jitterBootSeen:" + pageId;
+
+      let alreadyPlayed = false;
+      try { alreadyPlayed = sessionStorage.getItem(seenKey) === "1"; } catch (error) {}
+      if (alreadyPlayed) {
+        screen.remove();
+        return;
+      }
+      try { sessionStorage.setItem(seenKey, "1"); } catch (error) {}
+
+      const fill = document.getElementById("boot-fill");
+      const percent = document.getElementById("boot-percent");
+      const statusEl = document.getElementById("boot-status");
+      const root = document.documentElement;
+
+      const duration = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 900 : 6800;
+
+      // Each status line takes over once that share of the bar is filled.
+      const steps = [
+        [0, "Waking the engine"],
+        [10, "Loading syntax engines"],
+        [28, "Linking HTML / CSS / JavaScript"],
+        [48, "Mounting C / C++ / C# grammars"],
+        [70, "Polishing the liquid glass"],
+        [90, "Finishing up"],
+      ];
+
+      root.classList.add("is-booting");
+
+      const startedAt = performance.now();
+      let finished = false;
+      let stepIndex = -1;
+      let swapTimer;
+
+      function setStatus(text) {
+        if (statusEl.textContent === text) return;
+        statusEl.classList.add("swap");
+        clearTimeout(swapTimer);
+        swapTimer = setTimeout(() => {
+          statusEl.textContent = text;
+          statusEl.classList.remove("swap");
+        }, 220);
+      }
+
+      function finish() {
+        if (finished) return;
+        finished = true;
+        fill.style.width = "100%";
+        percent.textContent = "100%";
+        setStatus("Ready");
+
+        setTimeout(() => {
+          screen.classList.add("is-done");
+          root.classList.remove("is-booting");
+          setTimeout(() => screen.remove(), 1000);
+        }, 340);
+      }
+
+      function tick(now) {
+        if (finished) return;
+
+        const progress = Math.min((now - startedAt) / duration, 1);
+        const value = Math.round((1 - Math.pow(1 - progress, 1.6)) * 100);
+        fill.style.width = value + "%";
+        percent.textContent = value + "%";
+
+        let reached = 0;
+        for (const [threshold] of steps) {
+          if (value < threshold) break;
+          reached++;
+        }
+        if (reached - 1 !== stepIndex) {
+          stepIndex = reached - 1;
+          setStatus(steps[stepIndex][1]);
+        }
+
+        if (progress === 1) {
+          finish();
+        } else {
+          requestAnimationFrame(tick);
+        }
+      }
+
+      requestAnimationFrame(tick);
+
+      // Safety net: never leave the page hidden if animation frames stall.
+      setTimeout(finish, duration + 3500);
+
+      screen.addEventListener("click", finish);
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" || event.key === "Enter" || event.key === " ") finish();
+      });
+    })();
   </script>
 </body>
 </html>

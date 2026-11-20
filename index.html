@@ -214,7 +214,6 @@
       border-radius: 999px;
       background: linear-gradient(90deg, #6d28d9, #a78bfa 60%, #ede9fe);
       box-shadow: 0 0 18px rgba(167, 139, 250, 0.85);
-      transition: width 0.24s linear;
     }
     .boot-progress-fill::after {
       content: "";
@@ -268,7 +267,7 @@
   </style>
 </head>
 <body>
-  <div id="boot-screen" class="boot-screen" role="status" aria-live="polite" aria-label="Loading JitterDev">
+  <div id="boot-screen" class="boot-screen" aria-hidden="true">
     <span class="boot-blob one"></span>
     <span class="boot-blob two"></span>
     <span class="boot-blob three"></span>
@@ -365,30 +364,41 @@
       const screen = document.getElementById("boot-screen");
       if (!screen) return;
 
+      // The intro plays once per page per tab, so a reload in the same session skips it.
+      const pageId = location.pathname.replace(/^\/+|\/+$/g, "").replace(/index\.html$/, "") || "home";
+      const seenKey = "jitterBootSeen:" + pageId;
+
+      let alreadyPlayed = false;
+      try { alreadyPlayed = sessionStorage.getItem(seenKey) === "1"; } catch (error) {}
+      if (alreadyPlayed) {
+        screen.remove();
+        return;
+      }
+      try { sessionStorage.setItem(seenKey, "1"); } catch (error) {}
+
       const fill = document.getElementById("boot-fill");
       const percent = document.getElementById("boot-percent");
       const statusEl = document.getElementById("boot-status");
       const root = document.documentElement;
 
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const duration = reduceMotion ? 900 : 6800;
+      const duration = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 900 : 6800;
 
+      // Each status line takes over once that share of the bar is filled.
       const steps = [
         [0, "Waking the engine"],
-        [900, "Loading syntax engines"],
-        [2100, "Linking HTML / CSS / JavaScript"],
-        [3400, "Mounting C / C++ / C# grammars"],
-        [4700, "Polishing the liquid glass"],
-        [5900, "Finishing up"],
+        [10, "Loading syntax engines"],
+        [28, "Linking HTML / CSS / JavaScript"],
+        [48, "Mounting C / C++ / C# grammars"],
+        [70, "Polishing the liquid glass"],
+        [90, "Finishing up"],
       ];
 
       root.classList.add("is-booting");
 
+      const startedAt = performance.now();
       let finished = false;
       let stepIndex = -1;
       let swapTimer;
-      const startedAt = performance.now();
-      const easeOut = (t) => 1 - Math.pow(1 - t, 1.6);
 
       function setStatus(text) {
         if (statusEl.textContent === text) return;
@@ -418,30 +428,25 @@
         if (finished) return;
 
         const progress = Math.min((now - startedAt) / duration, 1);
-        // Ease to 92%, then ease the final stretch so the bar settles instead of snapping.
-        const eased = progress < 0.92
-          ? easeOut(progress / 0.92) * 0.92
-          : 0.92 + easeOut((progress - 0.92) / 0.08) * 0.08;
-
-        const value = Math.round(eased * 100);
+        const value = Math.round((1 - Math.pow(1 - progress, 1.6)) * 100);
         fill.style.width = value + "%";
         percent.textContent = value + "%";
 
-        const elapsed = now - startedAt;
-        let next = 0;
-        for (let i = 0; i < steps.length; i++) {
-          if (elapsed >= steps[i][0]) next = i;
+        let reached = 0;
+        for (const [threshold] of steps) {
+          if (value < threshold) break;
+          reached++;
         }
-        if (next !== stepIndex) {
-          stepIndex = next;
-          setStatus(steps[next][1]);
+        if (reached - 1 !== stepIndex) {
+          stepIndex = reached - 1;
+          setStatus(steps[stepIndex][1]);
         }
 
-        if (progress >= 1) {
+        if (progress === 1) {
           finish();
-          return;
+        } else {
+          requestAnimationFrame(tick);
         }
-        requestAnimationFrame(tick);
       }
 
       requestAnimationFrame(tick);
