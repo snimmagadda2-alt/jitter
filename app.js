@@ -258,154 +258,91 @@ function modeSpec(lang) {
 
 const SEEDS = [
   {
-    path: "index.html",
+    path: "tutorial.txt",
     content: [
-      '<!DOCTYPE html>',
-      '<html lang="en">',
-      '<head>',
-      '  <meta charset="UTF-8" />',
-      '  <title>Jitter playground</title>',
-      '  <link rel="stylesheet" href="styles.css" />',
-      '</head>',
-      '<body>',
-      '  <main class="card">',
-      '    <span class="pill">JitterDev</span>',
-      '    <h1>Hello from the workbench</h1>',
-      '    <p>Press Ctrl+Space for suggestions, Tab to accept, Shift+Up to scroll the list.</p>',
-      '    <button id="spark">Spark it</button>',
-      '  </main>',
-      '  <script src="app.js"><\/script>',
-      '</body>',
-      '</html>'
-    ].join("\n")
-  },
-  {
-    path: "styles.css",
-    content: [
-      ":root {",
-      "  --bg: #0e0c16;",
-      "  --ink: #ede9fe;",
-      "  --accent: #a78bfa;",
-      "}",
+      "JitterDev — editor tutorial",
+      "===========================",
       "",
-      "body {",
-      "  display: grid;",
-      "  place-items: center;",
-      "  min-height: 100vh;",
-      "  margin: 0;",
-      "  background: var(--bg);",
-      "  color: var(--ink);",
-      "  font-family: system-ui, sans-serif;",
-      "}",
+      "Welcome to JitterDev. The workspace starts with this one text file so you",
+      "can learn the editor before you write anything. You can delete it whenever",
+      "you like: right-click it in the Explorer and choose Delete File, or use",
+      "File > Delete File. File > Restore Deleted Files brings it back later.",
       "",
-      ".card {",
-      "  padding: 40px;",
-      "  border: 1px solid rgba(167, 139, 250, 0.3);",
-      "  border-radius: 20px;",
-      "  text-align: center;",
-      "}",
+      "1. The workbench",
+      "----------------",
+      "Title bar     Menus, the command box and the link to the home page.",
+      "Activity bar  Explorer, Search, Source Control, Run and Language packs.",
+      "Side bar      The tree for the active view. Drag its edge to resize it.",
+      "Editor        Tabs, breadcrumbs, line numbers, fold arrows and a minimap.",
+      "Panel         Problems, Output and Terminal. Ctrl+J shows or hides it.",
+      "Status bar    Branch, problems, cursor position, indentation and language.",
       "",
-      ".pill {",
-      "  color: var(--accent);",
-      "  letter-spacing: 0.2em;",
-      "  text-transform: uppercase;",
-      "}",
+      "2. Files",
+      "--------",
+      "Ctrl+N            New file. Folders work too, for example src/app.ts.",
+      "Ctrl+O            Open a file from disk.",
+      "Ctrl+S            Save. The first save asks where to put the file.",
+      "Ctrl+Shift+S      Save a copy.",
+      "Ctrl+W            Close the current tab.",
+      "Right-click file  Open or delete it from the Explorer.",
       "",
-      "#spark {",
-      "  margin-top: 18px;",
-      "  padding: 10px 20px;",
-      "  border: 1px solid var(--accent);",
-      "  border-radius: 999px;",
-      "  background: transparent;",
-      "  color: inherit;",
-      "  cursor: pointer;",
-      "}"
-    ].join("\n")
-  },
-  {
-    path: "app.js",
-    content: [
-      "const button = document.getElementById(\"spark\");",
+      "3. Language modes",
+      "-----------------",
+      "JitterDev ships with 160 language modes: HTML, CSS, JavaScript,",
+      "TypeScript, C, C++, C#, Java, Python, Rust, Go, Swift, PHP, Ruby, SQL,",
+      "shell, YAML and many more. The mode follows the file extension.",
+      "To switch it, click the language name in the status bar, press Ctrl+K, or",
+      "pick one in the Language packs view.",
       "",
-      "const colors = [\"#a78bfa\", \"#7c5cff\", \"#c4b5fd\", \"#6d28d9\"];",
+      "4. Suggestions",
+      "--------------",
+      "Ctrl+Space   Ask for suggestions at the cursor.",
+      "Type <       Every HTML tag is suggested. Keep typing to narrow the list.",
+      "Tab          Accept the highlighted suggestion.",
+      "Shift+Up     Move up through the list.",
+      "Shift+Down   Move down through the list.",
+      "Enter        Accept the suggestion too.",
+      "Esc          Close the list.",
       "",
-      "button.addEventListener(\"click\", () => {",
-      "  const color = colors[Math.floor(Math.random() * colors.length)];",
-      "  document.body.style.background = color;",
-      "  console.log(\"sparked\", color);",
-      "});",
+      "Inside an opening tag you also get attribute suggestions. Snippet labels",
+      "such as clg and fori expand when you accept them.",
       "",
-      "// TODO: add a reset button"
-    ].join("\n")
-  },
-  {
-    path: "README.md",
-    content: [
-      "# Jitter workspace",
+      "5. Finding things",
+      "-----------------",
+      "Ctrl+F        Find in the current file, with case, word and regex toggles.",
+      "Ctrl+H        Find and replace.",
+      "Ctrl+P        Jump to a file by name.",
+      "Ctrl+G        Jump to a line.",
+      "Ctrl+Shift+P  Command palette: every command in one searchable list.",
       "",
-      "A tiny playground that ships inside the editor.",
+      "6. Editing",
+      "----------",
+      "Ctrl+/     Comment or uncomment the selection.",
+      "Ctrl+D     Add the next match as another cursor.",
+      "Alt+Up     Move the current line up.",
+      "Alt+Down   Move the current line down.",
+      "Tab        Indent, or accept a suggestion.",
+      "Shift+Tab  Outdent.",
+      "Ctrl+=     Zoom in.   Ctrl+-  Zoom out.   Ctrl+0  Reset zoom.",
       "",
-      "## Shortcuts",
+      "7. Panels and running files",
+      "---------------------------",
+      "Problems  Lists marker notes in your code and jumps to them.",
+      "Output    Shows the result of running a JavaScript file.",
+      "Terminal  Try: help, ls, cat <file>, open <file>, run, clear, version.",
+      "Ctrl+`      Focus the terminal.",
+      "Ctrl+Alt+R  Run the active file.",
+      "Ctrl+Alt+V  Live preview of HTML, CSS or JavaScript.",
       "",
-      "- `Ctrl+Shift+P` command palette",
-      "- `Ctrl+P` go to file",
-      "- `Ctrl+F` find, `Ctrl+H` replace",
-      "- `Ctrl+Space` suggestions, `Tab` accepts",
-      "- `Shift+Up` / `Shift+Down` scroll the suggestion list",
+      "8. Layout",
+      "---------",
+      "Ctrl+B  Show or hide the side bar.",
+      "Ctrl+J  Show or hide the panel.",
+      "The panel button in the tab bar toggles the minimap, and dragging the",
+      "minimap scrolls the file.",
       "",
-      "TODO: document the terminal commands"
-    ].join("\n")
-  },
-  {
-    path: "src/main.py",
-    content: [
-      "from dataclasses import dataclass",
-      "",
-      "",
-      "@dataclass",
-      "class Task:",
-      "    title: str",
-      "    done: bool = False",
-      "",
-      "",
-      "def pending(tasks):",
-      "    return [task for task in tasks if not task.done]",
-      "",
-      "",
-      "if __name__ == \"__main__\":",
-      "    tasks = [Task(\"write code\"), Task(\"ship it\", True)]",
-      "    print(pending(tasks))"
-    ].join("\n")
-  },
-  {
-    path: "src/hello.c",
-    content: [
-      "#include <stdio.h>",
-      "",
-      "int main(void) {",
-      '  printf("Hello from JitterDev!\\n");',
-      "  return 0;",
-      "}"
-    ].join("\n")
-  },
-  {
-    path: "src/App.java",
-    content: [
-      "public class App {",
-      "  public static void main(String[] args) {",
-      '    System.out.println("Hello from JitterDev");',
-      "  }",
-      "}"
-    ].join("\n")
-  },
-  {
-    path: "notes.txt",
-    content: [
-      "Workspace notes",
-      "",
-      "- Type a < in an HTML file to see tag suggestions.",
-      "- Use Ctrl+Shift+P for every command in the editor.",
-      "- FIXME: try the minimap on a long file."
+      "That is the whole tour. Delete this file when you no longer need it, and",
+      "use File > Restore Deleted Files if you ever want it back."
     ].join("\n")
   }
 ];
@@ -435,12 +372,108 @@ function registerFile(path, content, lang) {
   return file;
 }
 
+const DELETED_KEY = "jitterDeletedFiles";
+
+function deletedSeeds() {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(DELETED_KEY) || "[]"));
+  } catch (error) {
+    return new Set();
+  }
+}
+
+function rememberDeleted(path, deleted) {
+  const set = deletedSeeds();
+  if (deleted) set.add(path);
+  else set.delete(path);
+  try {
+    localStorage.setItem(DELETED_KEY, JSON.stringify(Array.from(set)));
+  } catch (error) { /* storage blocked */ }
+}
+
+function isSeed(path) {
+  return SEEDS.some(function (seed) { return seed.path === path; });
+}
+
+function showEmpty() {
+  state.active = null;
+  editor.swapDoc(CodeMirror.Doc("", "text/plain"));
+  editor.setOption("mode", "text/plain");
+  editor.setOption("placeholder", "No file open. Press Ctrl+N to create a file, or Ctrl+O to open one.");
+  renderTabs();
+  renderExplorer();
+  refreshScm();
+  updateBreadcrumbs();
+  updateCommandCenter();
+  updateStatus();
+  scanProblems();
+  scheduleMinimap();
+}
+
+function deleteFile(path, confirm) {
+  const file = state.files[path];
+  if (!file) return;
+  if (confirm) {
+    openDialog("Delete file",
+      "<p>Delete <code>" + esc(path) + "</code> from this workspace? This cannot be undone.</p>" +
+      '<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">' +
+      '<button class="btn" id="delete-cancel">Cancel</button>' +
+      '<button class="btn primary" id="delete-ok">Delete</button></div>');
+    $("delete-cancel").addEventListener("click", closeDialog);
+    $("delete-ok").addEventListener("click", function () {
+      closeDialog();
+      deleteFile(path, false);
+    });
+    return;
+  }
+  closePath(path);
+  delete state.files[path];
+  if (isSeed(path)) rememberDeleted(path, true);
+  if (!state.tabs.length) showEmpty();
+  renderExplorer();
+  refreshScm();
+  updateBreadcrumbs();
+  toast("Deleted " + path);
+}
+
+function restoreDeletedFiles() {
+  const removed = deletedSeeds();
+  const restored = SEEDS.filter(function (seed) { return removed.has(seed.path) && !state.files[seed.path]; });
+  restored.forEach(function (seed) {
+    registerFile(seed.path, seed.content, langForPath(seed.path));
+    rememberDeleted(seed.path, false);
+  });
+  renderExplorer();
+  refreshScm();
+  if (!state.tabs.length) {
+    if (state.files["tutorial.txt"]) openPath("tutorial.txt");
+    else if (!Object.keys(state.files).length) showEmpty();
+  }
+  toast(restored.length ? "Restored " + restored.length + " file" + (restored.length === 1 ? "" : "s") : "Nothing to restore");
+}
+
+function openContextMenu(x, y, path) {
+  const menu = $("context-menu");
+  menu.innerHTML = '<button data-action="open">Open</button><button data-action="delete">Delete File</button>';
+  menu.hidden = false;
+  menu.style.left = Math.min(x, window.innerWidth - 190) + "px";
+  menu.style.top = Math.min(y, window.innerHeight - 84) + "px";
+  menu.onclick = function (event) {
+    const button = event.target.closest("button");
+    if (!button) return;
+    menu.hidden = true;
+    if (button.dataset.action === "open") openPath(path);
+    if (button.dataset.action === "delete") deleteFile(path, true);
+  };
+}
+
 function openPath(path) {
   const file = state.files[path];
   if (!file) return;
   if (state.tabs.indexOf(path) === -1) state.tabs.push(path);
   state.active = path;
   editor.swapDoc(file.doc);
+  editor.setOption("placeholder", "Start typing. Press Ctrl+Space for suggestions.");
   applyLanguage(file);
   renderTabs();
   renderExplorer();
@@ -463,8 +496,7 @@ function closePath(path) {
     if (next) {
       openPath(next);
     } else {
-      renderTabs();
-      updateBreadcrumbs();
+      showEmpty();
     }
   } else {
     renderTabs();
@@ -581,6 +613,9 @@ function renderExplorer() {
     html += '<div class="side-section"><span class="chev">▾</span>' + esc(dir) + "</div>";
     html += rowSet(groups.get(dir));
   });
+  if (!files.length && !explorerCreating) {
+    html += '<div class="side-note">No files in this workspace. Use + to create one, or Ctrl+O to open a file.</div>';
+  }
   box.innerHTML = html;
 
   if (explorerCreating) {
@@ -1303,6 +1338,8 @@ const COMMANDS = {
   "file.saveAs": { label: "Save File As…", keys: "Ctrl+Shift+S", run: function () { saveFileAs(); } },
   "file.close": { label: "Close Editor", keys: "Ctrl+W", run: function () { if (state.active) closePath(state.active); } },
   "file.home": { label: "Open JitterDev Home Page", keys: "", run: function () { window.location.href = "index.html"; } },
+  "file.delete": { label: "Delete File…", keys: "", run: function () { const file = activeFile(); if (file) deleteFile(file.path, true); else toast("Open a file first"); } },
+  "file.restore": { label: "Restore Deleted Files", keys: "", run: restoreDeletedFiles },
   "edit.undo": { label: "Undo", keys: "Ctrl+Z", run: function () { editor.undo(); } },
   "edit.redo": { label: "Redo", keys: "Ctrl+Y", run: function () { editor.redo(); } },
   "edit.cut": { label: "Cut", keys: "Ctrl+X", run: function () { editor.execCommand("cut"); } },
@@ -1337,7 +1374,7 @@ const COMMANDS = {
 };
 
 const MENUS = [
-  { label: "File", items: ["file.new", "file.open", null, "file.save", "file.saveAs", null, "file.close", "file.home"] },
+  { label: "File", items: ["file.new", "file.open", null, "file.save", "file.saveAs", null, "file.delete", "file.restore", null, "file.close", "file.home"] },
   { label: "Edit", items: ["edit.undo", "edit.redo", null, "edit.cut", "edit.copy", null, "edit.find", "edit.replace", null, "edit.comment", "edit.addCursor"] },
   { label: "Selection", items: ["edit.selectAll", "edit.addCursor"] },
   { label: "View", items: ["view.palette", null, "view.explorer", "view.search", "view.scm", "view.run", "view.extensions", null, "view.sidebar", "view.panel", "view.problems", null, "view.wrap", "view.minimap", null, "view.zoomIn", "view.zoomOut", "view.zoomReset"] },
@@ -1970,6 +2007,13 @@ function bindAll() {
     const row = event.target.closest(".tree-row[data-path]");
     if (row) openPath(row.dataset.path);
   });
+  $("view-explorer").addEventListener("contextmenu", function (event) {
+    const row = event.target.closest(".tree-row[data-path]");
+    if (!row) return;
+    event.preventDefault();
+    openContextMenu(event.clientX, event.clientY, row.dataset.path);
+  });
+  document.addEventListener("click", function () { $("context-menu").hidden = true; });
   $("view-scm").addEventListener("click", function (event) {
     const row = event.target.closest(".scm-row[data-path]");
     if (row) openPath(row.dataset.path);
@@ -2247,14 +2291,19 @@ function bootScreen() {
 
 function init() {
   initEditor();
-  SEEDS.forEach(function (seed) { registerFile(seed.path, seed.content, langForPath(seed.path)); });
+  const removed = deletedSeeds();
+  SEEDS.forEach(function (seed) {
+    if (!removed.has(seed.path)) registerFile(seed.path, seed.content, langForPath(seed.path));
+  });
   renderMenus();
   bindMenus();
   bindAll();
   refreshScm();
   renderRunView();
   renderExtensions();
-  openPath("index.html");
+  if (state.files["tutorial.txt"]) openPath("tutorial.txt");
+  else if (Object.keys(state.files).length) openPath(Object.keys(state.files)[0]);
+  else showEmpty();
   setView("explorer");
   updateStatus();
   scheduleMinimap();

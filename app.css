@@ -908,6 +908,31 @@ li.CodeMirror-hint-active .hint-detail { color: rgba(255, 255, 255, 0.75); }
 
 /* --------------------------------- toast ---------------------------------- */
 
+.context-menu {
+  position: fixed;
+  z-index: 350;
+  min-width: 168px;
+  padding: 4px;
+  background: #25252f;
+  border: 1px solid #45455c;
+  border-radius: 6px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55);
+}
+.context-menu button {
+  display: block;
+  width: 100%;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: #d7d7e8;
+  font-family: var(--ui);
+  font-size: 12.5px;
+  text-align: left;
+  cursor: pointer;
+}
+.context-menu button:hover { background: linear-gradient(90deg, #5a3ad0, #7a56e8); color: #fff; }
+
 .toast-wrap { position: fixed; right: 14px; bottom: 34px; z-index: 500; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
 .toast {
   min-width: 220px;
