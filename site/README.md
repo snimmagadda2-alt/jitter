@@ -1,19 +1,32 @@
 # JitterDev status site
 
-Replacement site for `jitterdev.vercel.app`. It serves no installers and contains no download links; the only page content is a status note plus a maintenance overlay that can be switched on and off.
+Replacement site for `jitterdev.vercel.app`. It serves no installers and contains no download links; the only page content is a status note plus a maintenance overlay.
+
+The overlay state lives in `site/maintenance.json` and nowhere else. There is no admin page, no passcode and no API: this is a static site.
 
 ## Deploy
 
 1. Vercel → **Add New → Project** → import `snimmagadda2-alt/jitter`.
 2. **Root Directory**: `site`. Framework preset: **Other** — no build command, no output directory.
 3. Project name: `jitterdededev` → the site is served at `jitterdededev.vercel.app`.
-4. Add environment variables (Production and Preview):
-   - `GITHUB_TOKEN` — fine-grained token for this repository with **Contents: Read and write**.
-   - `ADMIN_PASSCODE` — the passcode the status console asks for.
-5. Redeploy once after adding the variables so the function picks them up.
+
+No environment variables are needed.
 
 ## Turning the overlay on and off
 
-Open `/admin.html`, enter the passcode, flip the switch. The function commits `site/maintenance.json`, so every visitor sees the change within a minute (open tabs re-check every 60s, new loads get it immediately).
+Edit `site/maintenance.json` in the GitHub web editor and commit to `main`:
 
-Without the environment variables the console reports the missing variable, and `index.html` falls back to whatever is committed in `site/maintenance.json`.
+```json
+{ "enabled": true, "message": "…", "updatedAt": "…" }
+```
+
+- `enabled: true` — visitors see the maintenance card and the page cannot scroll.
+- `enabled: false` — the overlay is hidden and the status panel shows **Online**.
+
+`message` is the text shown inside the card. Vercel redeploys on the commit, so the change is live once that deploy finishes; open tabs re-check every 60s and need no reload.
+
+## Files
+
+- `index.html` — the only page. Fetches `/maintenance.json` on load.
+- `maintenance.json` — the on/off switch and its message.
+- `vercel.json` — keeps `/maintenance.json` uncached so a toggle is not hidden behind a stale copy.

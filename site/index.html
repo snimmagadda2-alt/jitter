@@ -211,16 +211,15 @@
       }
 
       async function refresh() {
-        // The API reflects the live toggle; the committed JSON is the fallback when it is not configured.
-        for (const url of ["/api/maintenance", "/maintenance.json"]) {
-          try {
-            const response = await fetch(url + "?t=" + Date.now(), { cache: "no-store" });
-            if (!response.ok) continue;
-            render(await response.json());
-            return;
-          } catch (error) {}
+        // The committed file is the single source of truth; editing it on GitHub and
+        // letting the project redeploy is what switches the overlay.
+        try {
+          const response = await fetch("/maintenance.json?t=" + Date.now(), { cache: "no-store" });
+          if (!response.ok) throw new Error("unavailable");
+          render(await response.json());
+        } catch (error) {
+          render(null);
         }
-        render(null);
       }
 
       refresh();
