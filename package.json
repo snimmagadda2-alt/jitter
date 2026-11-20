@@ -18,6 +18,8 @@
     "files": [
       "main.js",
       "app.html",
+      "app.css",
+      "app.js",
       "icon.png"
     ],
     "win": {
