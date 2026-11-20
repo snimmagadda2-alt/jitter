@@ -299,8 +299,8 @@ const SEEDS = [
       "Ctrl+Space   Ask for suggestions at the cursor.",
       "Type <       Every HTML tag is suggested. Keep typing to narrow the list.",
       "Tab          Accept the highlighted suggestion.",
-      "Shift+Up     Move up through the list.",
-      "Shift+Down   Move down through the list.",
+      "Shift+Up     Open the suggestion list, then scroll it with Up and Down.",
+      "Shift+Down   Open the list as well, or move down when it is already open.",
       "Enter        Accept the suggestion too.",
       "Esc          Close the list.",
       "",
@@ -685,6 +685,8 @@ function initEditor() {
       "Ctrl-Space": function (cm) { cm.showHint({ hint: jitterHint, completeSingle: false }); },
       Tab: function (cm) { return handleTab(cm); },
       "Shift-Tab": "indentLess",
+      Up: function (cm) { return moveSuggestion(cm, -1); },
+      Down: function (cm) { return moveSuggestion(cm, 1); },
       "Shift-Up": function (cm) { return scrollSuggest(cm, -1); },
       "Shift-Down": function (cm) { return scrollSuggest(cm, 1); },
       "Ctrl-S": function () { saveFile(); },
@@ -890,13 +892,23 @@ function renderHint(element, self, data) {
   element.innerHTML = '<span class="hint-kind">' + esc(glyph) + '</span><span class="hint-label">' + esc(label).split("\n")[0] + "</span>" + detail;
 }
 
+function moveSuggestion(cm, direction) {
+  const completion = cm.state.completionActive;
+  if (!completion || !completion.widget) return CodeMirror.Pass;
+  completion.widget.changeActive(completion.widget.selectedHint + direction, true);
+  return;
+}
+
 function scrollSuggest(cm, direction) {
   const completion = cm.state.completionActive;
-  if (!completion) return CodeMirror.Pass;
-  const widget = completion.widget;
-  if (widget && typeof widget.changeActive === "function") {
-    widget.changeActive(widget.selectedHint + direction);
+  if (completion && completion.widget) {
+    completion.widget.changeActive(completion.widget.selectedHint + direction, true);
+    return;
   }
+  if (direction > 0) return CodeMirror.Pass;
+  const result = jitterHint(cm);
+  if (!result.list.length) return CodeMirror.Pass;
+  cm.showHint({ hint: function () { return result; }, completeSingle: false });
   return;
 }
 
@@ -1914,7 +1926,7 @@ function showShortcuts() {
   const rows = [
     ["Command palette", "Ctrl+Shift+P"], ["Go to file", "Ctrl+P"], ["Go to line", "Ctrl+G"],
     ["Find / replace", "Ctrl+F  /  Ctrl+H"], ["Suggestions", "Ctrl+Space"],
-    ["Accept suggestion / expand snippet", "Tab"], ["Scroll suggestions", "Shift+Up  /  Shift+Down"],
+    ["Accept suggestion / expand snippet", "Tab"], ["Open suggestions, then scroll", "Shift+Up, then Up / Down"],
     ["Toggle comment", "Ctrl+/"], ["Add next occurrence", "Ctrl+D"], ["Save file", "Ctrl+S"],
     ["Open file", "Ctrl+O"], ["Close editor", "Ctrl+W"], ["Toggle side bar", "Ctrl+B"],
     ["Toggle panel", "Ctrl+J"], ["Change language", "Ctrl+K"], ["Run active file", "Ctrl+Alt+R"],
