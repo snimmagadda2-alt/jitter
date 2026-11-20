@@ -296,11 +296,11 @@ const SEEDS = [
       "",
       "4. Suggestions",
       "--------------",
-      "Ctrl+Space   Ask for suggestions at the cursor.",
+      "Shift+Up arrow  Ask for suggestions at the cursor. Ctrl+Space works too.",
       "Type <       Every HTML tag is suggested. Keep typing to narrow the list.",
       "Tab          Accept the highlighted suggestion.",
-      "Shift+Up     Open the suggestion list, then scroll it with Up and Down.",
-      "Shift+Down   Open the list as well, or move down when it is already open.",
+      "Shift+Up arrow  Open the suggestion list, then scroll it with the Up and Down arrows.",
+      "Shift+Down arrow  Open the list as well, or move down when it is already open.",
       "Enter        Accept the suggestion too.",
       "Esc          Close the list.",
       "",
@@ -473,7 +473,7 @@ function openPath(path) {
   if (state.tabs.indexOf(path) === -1) state.tabs.push(path);
   state.active = path;
   editor.swapDoc(file.doc);
-  editor.setOption("placeholder", "Start typing. Press Ctrl+Space for suggestions.");
+  editor.setOption("placeholder", "Start typing. Press Shift+Up arrow for suggestions.");
   applyLanguage(file);
   renderTabs();
   renderExplorer();
@@ -678,7 +678,7 @@ function initEditor() {
     styleActiveLine: true,
     foldGutter: true,
     gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-    placeholder: "Start typing. Press Ctrl+Space for suggestions.",
+    placeholder: "Start typing. Press Shift+Up arrow for suggestions.",
     scrollbarStyle: "native",
     hintOptions: { hint: jitterHint, completeSingle: false, alignWithWord: true },
     extraKeys: {
@@ -1925,8 +1925,8 @@ function closeDialog() {
 function showShortcuts() {
   const rows = [
     ["Command palette", "Ctrl+Shift+P"], ["Go to file", "Ctrl+P"], ["Go to line", "Ctrl+G"],
-    ["Find / replace", "Ctrl+F  /  Ctrl+H"], ["Suggestions", "Ctrl+Space"],
-    ["Accept suggestion / expand snippet", "Tab"], ["Open suggestions, then scroll", "Shift+Up, then Up / Down"],
+    ["Find / replace", "Ctrl+F  /  Ctrl+H"], ["Suggestions", "Shift+Up arrow"],
+    ["Accept suggestion / expand snippet", "Tab"], ["Open suggestions, then scroll", "Shift+Up arrow, then Up / Down arrows"],
     ["Toggle comment", "Ctrl+/"], ["Add next occurrence", "Ctrl+D"], ["Save file", "Ctrl+S"],
     ["Open file", "Ctrl+O"], ["Close editor", "Ctrl+W"], ["Toggle side bar", "Ctrl+B"],
     ["Toggle panel", "Ctrl+J"], ["Change language", "Ctrl+K"], ["Run active file", "Ctrl+Alt+R"],
