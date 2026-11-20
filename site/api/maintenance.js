@@ -24,12 +24,28 @@ function githubHeaders() {
   };
 }
 
+// Keeps GitHub's own explanation in the message: it names the missing permission
+// ("Resource not accessible by personal access token") instead of just a status.
+async function githubError(response, action) {
+  let detail = "";
+  try {
+    const body = await response.json();
+    if (typeof body.message === "string") detail = body.message;
+    if (!detail && Array.isArray(body.errors)) {
+      detail = body.errors.map((entry) => entry.message || entry.code).filter(Boolean).join("; ");
+    }
+  } catch (error) {
+    // GitHub sometimes answers with an HTML page; the status alone will have to do.
+  }
+  return new Error(`Could not ${action} the state file (GitHub ${response.status}${detail ? `: ${detail}` : ""}).`);
+}
+
 async function readState() {
   const response = await fetch(`${CONTENTS_URL}?ref=${BRANCH}`, {
     headers: githubHeaders(),
     cache: "no-store",
   });
-  if (!response.ok) throw new Error(`Could not read the state file (GitHub ${response.status}).`);
+  if (!response.ok) throw await githubError(response, "read");
   const body = await response.json();
   return {
     sha: body.sha,
@@ -48,7 +64,7 @@ async function writeState(state, sha) {
       content: Buffer.from(`${JSON.stringify(state, null, 2)}\n`).toString("base64"),
     }),
   });
-  if (!response.ok) throw new Error(`Could not save the state file (GitHub ${response.status}).`);
+  if (!response.ok) throw await githubError(response, "save");
 }
 
 module.exports = async function handler(req, res) {
